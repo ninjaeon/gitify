@@ -38,6 +38,67 @@ const mb = menubar({
   showDockIcon: false, // Hide the app from the macOS dock
 });
 
+// Additional Menubar and BrowserWindow event listeners for logging
+mb.on('after-create-window', () => {
+  logInfo(
+    'Menubar Event: "after-create-window" fired. Window initial visibility: ' +
+      (mb.window ? mb.window.isVisible() : 'N/A'),
+  );
+  if (mb.window) {
+    logInfo('Attaching BrowserWindow specific event listeners.');
+    mb.window.on('show', () => {
+      logInfo(
+        'BrowserWindow Event (mb.window): "show". Current visibility: ' +
+          (mb.window ? mb.window.isVisible() : 'N/A'),
+      );
+    });
+    mb.window.on('hide', () => {
+      logInfo(
+        'BrowserWindow Event (mb.window): "hide". Current visibility: ' +
+          (mb.window ? mb.window.isVisible() : 'N/A'),
+      );
+    });
+    mb.window.on('focus', () => {
+      logInfo('BrowserWindow Event (mb.window): "focus".');
+    });
+    mb.window.on('blur', () => {
+      logInfo('BrowserWindow Event (mb.window): "blur".');
+    });
+  } else {
+    logWarn(
+      'Menubar Event: "after-create-window" fired, but mb.window is not available to attach listeners.',
+    );
+  }
+});
+
+mb.on('show', () => {
+  logInfo(
+    'Menubar Event: "show" (before window.show()). Window visibility before internal show: ' +
+      (mb.window ? mb.window.isVisible() : 'N/A'),
+  );
+});
+
+mb.on('after-show', () => {
+  logInfo(
+    'Menubar Event: "after-show". Window visibility after internal show: ' +
+      (mb.window ? mb.window.isVisible() : 'N/A'),
+  );
+});
+
+mb.on('hide', () => {
+  logInfo(
+    'Menubar Event: "hide" (before window.hide()). Window visibility before internal hide: ' +
+      (mb.window ? mb.window.isVisible() : 'N/A'),
+  );
+});
+
+mb.on('after-hide', () => {
+  logInfo(
+    'Menubar Event: "after-hide". Window visibility after internal hide: ' +
+      (mb.window ? mb.window.isVisible() : 'N/A'),
+  );
+});
+
 const menuBuilder = new MenuBuilder(mb);
 const contextMenu = menuBuilder.buildMenu();
 
@@ -62,11 +123,16 @@ app.whenReady().then(async () => {
   await onFirstRunMaybe();
 
   mb.on('ready', () => {
+    logInfo('Menubar Event: "ready" fired.');
     let initialStartupDecisionMade = false;
 
     ipc.on(
       namespacedEvent('should-show-window-on-startup'),
       (_event, showWindowOnStartupBoolean) => {
+        logInfo(
+          `main:ipc:should-show-window-on-startup received. Value: ${showWindowOnStartupBoolean}, initialStartupDecisionMade: ${initialStartupDecisionMade}, isOAuthLaunch: ${isOAuthLaunch}, mb.window visible: ${mb.window?.isVisible() ?? 'N/A'}`,
+        );
+
         if (initialStartupDecisionMade) {
           logInfo(
             'main:ipc:should-show-window-on-startup',
@@ -88,16 +154,20 @@ app.whenReady().then(async () => {
 
         logInfo(
           'main:ipc:should-show-window-on-startup',
-          `Normal Startup: Received setting: ${showWindowOnStartupBoolean}, Window currently visible: ${mb.window.isVisible()}`,
+          `Normal Startup: Processing setting: ${showWindowOnStartupBoolean}. Window currently visible: ${mb.window?.isVisible() ?? 'N/A'}`,
         );
 
         if (showWindowOnStartupBoolean) {
-          if (!mb.window.isVisible()) {
+          if (!mb.window?.isVisible()) {
             logInfo(
               'main:ipc:should-show-window-on-startup',
-              'Normal Startup: Setting is TRUE. Showing window.',
+              'Normal Startup: Setting is TRUE. Window not visible. Calling mb.showWindow().',
             );
             mb.showWindow();
+            logInfo(
+              'main:ipc:should-show-window-on-startup',
+              'Normal Startup: Called mb.showWindow().',
+            );
           } else {
             logInfo(
               'main:ipc:should-show-window-on-startup',
@@ -106,12 +176,16 @@ app.whenReady().then(async () => {
           }
         } else {
           // Normal Startup & showWindowOnStartupBoolean is FALSE
-          if (mb.window.isVisible()) {
+          if (mb.window?.isVisible()) {
             logInfo(
               'main:ipc:should-show-window-on-startup',
-              'Normal Startup: Setting is FALSE. Window is visible, hiding it.',
+              'Normal Startup: Setting is FALSE. Window is visible. Calling mb.hideWindow().',
             );
             mb.hideWindow();
+            logInfo(
+              'main:ipc:should-show-window-on-startup',
+              'Normal Startup: Called mb.hideWindow().',
+            );
           } else {
             logInfo(
               'main:ipc:should-show-window-on-startup',
@@ -282,7 +356,12 @@ const handleURL = (url: string) => {
     isOAuthLaunch = true;
     logInfo('main:handleUrl', `forwarding URL ${url} to renderer process`);
     mb.window.webContents.send(namespacedEvent('auth-callback'), url);
-    logInfo('main:handleURL', 'Showing window for OAuth redirect.');
+
+    logInfo(
+      'main:handleURL',
+      `OAuth redirect: Current window visibility: ${mb.window?.isVisible() ?? 'N/A'}. Calling mb.showWindow().`,
+    );
     mb.showWindow();
+    logInfo('main:handleURL', 'OAuth redirect: Called mb.showWindow().');
   }
 };
