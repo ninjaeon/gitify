@@ -309,15 +309,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const restoreSettings = useCallback(async () => {
-    console.log('[RendererContext] restoreSettings: Starting.');
     const loadedState = loadState(); // loadState() now ensures settings.showWindowOnStartup has a default
 
     const effectiveSettings = { ...defaultSettings, ...loadedState.settings };
-
-    // New detailed log
-    console.log(
-      `[RendererContext] restoreSettings: 'showWindowOnStartup' - Effective: ${effectiveSettings.showWindowOnStartup}, Loaded: ${loadedState.settings?.showWindowOnStartup}, Default: ${defaultSettings.showWindowOnStartup}`,
-    );
 
     setSettings(effectiveSettings);
 
@@ -328,10 +322,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       zoomPercentageToLevel(effectiveSettings.zoomPercentage),
     );
 
-    // New log before IPC send
-    console.log(
-      `[RendererContext] restoreSettings: Sending IPC 'should-show-window-on-startup' with value: ${effectiveSettings.showWindowOnStartup}`,
-    );
     // Send the specific 'showWindowOnStartup' value to the main process
     ipcRenderer.send(
       namespacedEvent('should-show-window-on-startup'),
@@ -339,7 +329,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     );
 
     if (loadedState.auth) {
-      console.log('[RendererContext] restoreSettings: Restoring auth state.');
       setAuth({ ...defaultAuth, ...loadedState.auth });
 
       // Refresh account data on app start
@@ -358,7 +347,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         await refreshAccount(account);
       }
     }
-    console.log('[RendererContext] restoreSettings: Finished.');
   }, [setAuth, setSettings]);
 
   const fetchNotificationsWithAccounts = useCallback(
