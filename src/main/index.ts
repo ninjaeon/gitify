@@ -56,6 +56,7 @@ if (isMacOS() || isWindows()) {
 }
 
 let shouldUseAlternateIdleIcon = false;
+let isOAuthLaunch = false;
 
 app.whenReady().then(async () => {
   await onFirstRunMaybe();
@@ -65,17 +66,59 @@ app.whenReady().then(async () => {
 
     ipc.on(
       namespacedEvent('should-show-window-on-startup'),
-      (_event, showWindowOnStartup) => {
-        if (!initialStartupDecisionMade && showWindowOnStartup) {
+      (_event, showWindowOnStartupBoolean) => {
+        if (initialStartupDecisionMade) {
+          logInfo(
+            'main:ipc:should-show-window-on-startup',
+            'Startup decision already processed or OAuth launch took precedence. Ignoring event.',
+          );
+          return;
+        }
+
+        if (isOAuthLaunch) {
+          logInfo(
+            'main:ipc:should-show-window-on-startup',
+            'OAuth launch detected. Visibility managed by handleURL.',
+          );
+          initialStartupDecisionMade = true; // Mark that startup visibility decision is "handled" by OAuth
+          return;
+        }
+
+        initialStartupDecisionMade = true;
+
+        logInfo(
+          'main:ipc:should-show-window-on-startup',
+          `Normal Startup: Received setting: ${showWindowOnStartupBoolean}, Window currently visible: ${mb.window.isVisible()}`,
+        );
+
+        if (showWindowOnStartupBoolean) {
           if (!mb.window.isVisible()) {
             logInfo(
               'main:ipc:should-show-window-on-startup',
-              'Showing window based on user setting.',
+              'Normal Startup: Setting is TRUE. Showing window.',
             );
             mb.showWindow();
+          } else {
+            logInfo(
+              'main:ipc:should-show-window-on-startup',
+              'Normal Startup: Setting is TRUE, window already visible. No action.',
+            );
+          }
+        } else {
+          // Normal Startup & showWindowOnStartupBoolean is FALSE
+          if (mb.window.isVisible()) {
+            logInfo(
+              'main:ipc:should-show-window-on-startup',
+              'Normal Startup: Setting is FALSE. Window is visible, hiding it.',
+            );
+            mb.hideWindow();
+          } else {
+            logInfo(
+              'main:ipc:should-show-window-on-startup',
+              'Normal Startup: Setting is FALSE. Window already hidden. No action.',
+            );
           }
         }
-        initialStartupDecisionMade = true;
       },
     );
 
@@ -236,6 +279,7 @@ app.on('open-url', (event, url) => {
 
 const handleURL = (url: string) => {
   if (url.startsWith(`${protocol}://`)) {
+    isOAuthLaunch = true;
     logInfo('main:handleUrl', `forwarding URL ${url} to renderer process`);
     mb.window.webContents.send(namespacedEvent('auth-callback'), url);
     logInfo('main:handleURL', 'Showing window for OAuth redirect.');
