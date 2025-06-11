@@ -61,6 +61,24 @@ app.whenReady().then(async () => {
   await onFirstRunMaybe();
 
   mb.on('ready', () => {
+    let initialStartupDecisionMade = false;
+
+    ipc.on(
+      namespacedEvent('should-show-window-on-startup'),
+      (_event, showWindowOnStartup) => {
+        if (!initialStartupDecisionMade && showWindowOnStartup) {
+          if (!mb.window.isVisible()) {
+            logInfo(
+              'main:ipc:should-show-window-on-startup',
+              'Showing window based on user setting.',
+            );
+            mb.showWindow();
+          }
+        }
+        initialStartupDecisionMade = true;
+      },
+    );
+
     mb.app.setAppUserModelId(APPLICATION.ID);
 
     // Tray configuration
@@ -220,5 +238,7 @@ const handleURL = (url: string) => {
   if (url.startsWith(`${protocol}://`)) {
     logInfo('main:handleUrl', `forwarding URL ${url} to renderer process`);
     mb.window.webContents.send(namespacedEvent('auth-callback'), url);
+    logInfo('main:handleURL', 'Showing window for OAuth redirect.');
+    mb.showWindow();
   }
 };

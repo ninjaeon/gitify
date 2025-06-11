@@ -1,10 +1,21 @@
-import type { GitifyState } from '../types';
+import type { GitifyState, SettingsState } from '../types';
 import { Constants } from './constants';
 
 export function loadState(): GitifyState {
   const existing = localStorage.getItem(Constants.STORAGE_KEY);
-  const { auth, settings } = (existing && JSON.parse(existing)) || {};
-  return { auth, settings };
+  const parsedState: Partial<GitifyState> = existing
+    ? JSON.parse(existing)
+    : {};
+
+  const settings: Partial<SettingsState> = parsedState.settings || {};
+  if (typeof settings.showWindowOnStartup === 'undefined') {
+    settings.showWindowOnStartup = true; // Default to true
+  }
+
+  return {
+    auth: parsedState.auth,
+    settings: settings as SettingsState,
+  };
 }
 
 export function saveState(gitifyState: GitifyState) {

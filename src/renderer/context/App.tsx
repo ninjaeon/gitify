@@ -308,23 +308,30 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const restoreSettings = useCallback(async () => {
-    const existing = loadState();
+    const loadedState = loadState(); // loadState() now ensures settings.showWindowOnStartup has a default
 
-    // Restore settings before accounts to ensure filters are available before fetching notifications
-    if (existing.settings) {
-      setKeyboardShortcut(existing.settings.keyboardShortcut);
-      setAlternateIdleIcon(existing.settings.useAlternateIdleIcon);
-      setSettings({ ...defaultSettings, ...existing.settings });
-      webFrame.setZoomLevel(
-        zoomPercentageToLevel(existing.settings.zoomPercentage),
-      );
-    }
+    const effectiveSettings = { ...defaultSettings, ...loadedState.settings };
 
-    if (existing.auth) {
-      setAuth({ ...defaultAuth, ...existing.auth });
+    setSettings(effectiveSettings);
+
+    // Apply side effects from settings
+    setKeyboardShortcut(effectiveSettings.keyboardShortcut);
+    setAlternateIdleIcon(effectiveSettings.useAlternateIdleIcon);
+    webFrame.setZoomLevel(
+      zoomPercentageToLevel(effectiveSettings.zoomPercentage),
+    );
+
+    // Send the specific 'showWindowOnStartup' value to the main process
+    ipcRenderer.send(
+      namespacedEvent('should-show-window-on-startup'),
+      effectiveSettings.showWindowOnStartup,
+    );
+
+    if (loadedState.auth) {
+      setAuth({ ...defaultAuth, ...loadedState.auth });
 
       // Refresh account data on app start
-      for (const account of existing.auth.accounts) {
+      for (const account of loadedState.auth.accounts) {
         /**
          * Check if the account is using an encrypted token.
          * If not encrypt it and save it.
@@ -339,7 +346,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         await refreshAccount(account);
       }
     }
-  }, []);
+  }, [setAuth, setSettings]);
 
   const fetchNotificationsWithAccounts = useCallback(
     async () => await fetchNotifications({ auth, settings }),

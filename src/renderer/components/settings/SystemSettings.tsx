@@ -178,6 +178,15 @@ export const SystemSettings: FC = () => {
           visible={!isLinux()}
           onChange={(evt) => updateSetting('openAtStartup', evt.target.checked)}
         />
+
+        <Checkbox
+          name="showWindowOnStartup"
+          label="Show window when app starts"
+          checked={settings.showWindowOnStartup}
+          onChange={(evt) =>
+            updateSetting('showWindowOnStartup', evt.target.checked)
+          }
+        />
       </Stack>
     </fieldset>
   );
