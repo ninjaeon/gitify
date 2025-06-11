@@ -163,14 +163,15 @@ app.whenReady().then(async () => {
         }
 
         initialStartupDecisionMade = true;
+        const preActionIsVisible = mb.window ? mb.window.isVisible() : 'N/A';
 
         logInfo(
           'main:ipc:startupShow',
-          `Normal Startup: Processing setting: ${showWindowOnStartupBoolean}. Window currently visible: ${mb.window?.isVisible() ?? 'N/A'}`,
+          `Normal Startup: Processing setting: ${showWindowOnStartupBoolean}. Window current visibility (pre-action): ${preActionIsVisible}`,
         );
 
         if (showWindowOnStartupBoolean) {
-          if (!mb.window?.isVisible()) {
+          if (!mb.window?.isVisible()) { // Re-check, though preActionIsVisible is a good indicator
             logInfo(
               'main:ipc:startupShow',
               'Normal Startup: Setting is TRUE. Window not visible. Calling mb.showWindow().',
@@ -178,7 +179,7 @@ app.whenReady().then(async () => {
             mb.showWindow();
             logInfo(
               'main:ipc:startupShow',
-              'Normal Startup: Called mb.showWindow().',
+              `Called mb.showWindow(). Window now visible: ${mb.window ? mb.window.isVisible() : 'N/A'}`,
             );
           } else {
             logInfo(
@@ -188,22 +189,56 @@ app.whenReady().then(async () => {
           }
         } else {
           // Normal Startup & showWindowOnStartupBoolean is FALSE
-          if (mb.window?.isVisible()) {
+          logInfo(
+            'main:ipc:startupShow',
+            `Normal Startup: Setting is FALSE. Initial window visibility: ${preActionIsVisible}.`,
+          );
+
+          // Attempt to hide immediately if it became visible before this exact moment
+          if (mb.window && mb.window.isVisible()) {
             logInfo(
               'main:ipc:startupShow',
-              'Normal Startup: Setting is FALSE. Window is visible. Calling mb.hideWindow().',
+              'Normal Startup: Setting is FALSE. Window is unexpectedly visible, hiding immediately.',
             );
             mb.hideWindow();
             logInfo(
               'main:ipc:startupShow',
-              'Normal Startup: Called mb.hideWindow().',
+              `Called immediate mb.hideWindow(). Window now visible: ${mb.window ? mb.window.isVisible() : 'N/A'}`,
             );
           } else {
             logInfo(
               'main:ipc:startupShow',
-              'Normal Startup: Setting is FALSE. Window already hidden. No action.',
+              'Normal Startup: Setting is FALSE. Window is already hidden or N/A. No immediate hide action.',
             );
           }
+
+          // Set a timeout to re-check and hide if it was shown by a rogue event
+          setTimeout(() => {
+            // Re-check conditions: setting is still false, not an OAuth launch, and window exists
+            if (!showWindowOnStartupBoolean && mb.window && !isOAuthLaunch) {
+              if (mb.window.isVisible()) {
+                logInfo(
+                  'main:ipc:startupShow:delayedHide',
+                  `Setting is FALSE. Window found visible after delay. Hiding again. isOAuthLaunch: ${isOAuthLaunch}`,
+                );
+                mb.hideWindow();
+                logInfo(
+                  'main:ipc:startupShow:delayedHide',
+                  `Called delayed mb.hideWindow(). Window now visible: ${mb.window.isVisible()}`,
+                );
+              } else {
+                logInfo(
+                  'main:ipc:startupShow:delayedHide',
+                  'Setting is FALSE. Window already hidden after delay. No action.',
+                );
+              }
+            } else {
+              logInfo(
+                'main:ipc:startupShow:delayedHide',
+                `Not hiding: showSettingTrue: ${showWindowOnStartupBoolean}, noWindow: ${!mb.window}, oAuth: ${isOAuthLaunch}`,
+              );
+            }
+          }, 300); // 300ms delay
         }
       },
     );
