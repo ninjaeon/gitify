@@ -104,6 +104,7 @@ const mockSystemSettings: SystemSettingsState = {
   notificationVolume: 20,
   useAlternateIdleIcon: false,
   openAtStartup: false,
+  showWindowOnStartup: false,
 };
 
 const mockFilters: FilterSettingsState = {
