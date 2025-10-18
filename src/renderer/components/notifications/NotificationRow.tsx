@@ -1,19 +1,15 @@
 import { type FC, useCallback, useContext, useState } from 'react';
 
 import { BellSlashIcon, CheckIcon, ReadIcon } from '@primer/octicons-react';
-import { Box, Stack, Text, Tooltip } from '@primer/react';
+import { Stack, Text, Tooltip } from '@primer/react';
 
 import { AppContext } from '../../context/App';
 import { GroupBy, Opacity, Size } from '../../types';
 import type { Notification } from '../../typesGitHub';
 import { cn } from '../../utils/cn';
 import { isMarkAsDoneFeatureSupported } from '../../utils/features';
-import { formatForDisplay } from '../../utils/helpers';
-import {
-  getNotificationTypeIcon,
-  getNotificationTypeIconColor,
-} from '../../utils/icons';
 import { openNotification } from '../../utils/links';
+import { createNotificationHandler } from '../../utils/notifications/handlers';
 import { HoverButton } from '../primitives/HoverButton';
 import { HoverGroup } from '../primitives/HoverGroup';
 import { NotificationFooter } from './NotificationFooter';
@@ -73,68 +69,65 @@ export const NotificationRow: FC<INotificationRow> = ({
     unsubscribeNotification(notification);
   };
 
-  const NotificationIcon = getNotificationTypeIcon(notification.subject);
-  const iconColor = getNotificationTypeIconColor(notification.subject);
-
-  const notificationType = formatForDisplay([
-    notification.subject.state,
-    notification.subject.type,
-  ]);
-
-  const notificationNumber = notification.subject?.number
-    ? `#${notification.subject.number}`
-    : '';
-
-  const notificationTitle = notificationNumber
-    ? `${notification.subject.title} [${notificationNumber}]`
-    : notification.subject.title;
+  const handler = createNotificationHandler(notification);
+  const NotificationIcon = handler.iconType(notification.subject);
+  const iconColor = handler.iconColor(notification.subject);
+  const notificationType = handler.formattedNotificationType(notification);
+  const notificationNumber = handler.formattedNotificationNumber(notification);
+  const notificationTitle = handler.formattedNotificationTitle(notification);
 
   const groupByDate = settings.groupBy === GroupBy.DATE;
 
   return (
-    <Box
-      id={notification.id}
+    <div
       className={cn(
         'group border-b',
-        'pl-3 pr-1 py-1.5',
+        'pl-1.5 pr-1 py-0.75',
         'text-gitify-font border-gitify-notification-border hover:bg-gitify-notification-hover',
         (isAnimated || animateExit) &&
-          'translate-x-full opacity-0 transition duration-[350ms] ease-in-out',
+          'translate-x-full opacity-0 transition duration-350 ease-in-out',
         (isRead || showAsRead) && Opacity.READ,
       )}
+      id={notification.id}
     >
       <Stack
-        direction="horizontal"
         align="center"
-        gap="condensed"
         className="relative"
+        direction="horizontal"
+        gap="condensed"
       >
-        <Tooltip text={notificationType} direction="e">
-          <NotificationIcon size={Size.LARGE} className={iconColor} />
+        <Tooltip direction="e" text={notificationType}>
+          <button type="button">
+            <NotificationIcon
+              aria-label={notificationType}
+              className={iconColor}
+              size={Size.LARGE}
+            />
+          </button>
         </Tooltip>
 
         <Stack
-          direction="vertical"
-          gap="none"
           className={cn(
             'cursor-pointer text-sm w-full',
             !settings.wrapNotificationTitle && 'truncate',
           )}
+          direction="vertical"
+          gap="none"
           onClick={() => handleNotification()}
         >
           <NotificationHeader notification={notification} />
 
           <Stack
-            direction="horizontal"
             align="start"
-            justify="space-between"
-            gap="condensed"
-            title={notificationTitle}
             className={cn(
               'mb-0.5',
               !settings.wrapNotificationTitle && 'truncate',
             )}
             data-testid="notification-row"
+            direction="horizontal"
+            gap="condensed"
+            justify="space-between"
+            title={notificationTitle}
           >
             <Text className={!settings.wrapNotificationTitle && 'truncate'}>
               {notification.subject.title}
@@ -156,29 +149,29 @@ export const NotificationRow: FC<INotificationRow> = ({
         {!animateExit && (
           <HoverGroup bgColor="group-hover:bg-gitify-notification-hover">
             <HoverButton
-              label="Mark as done"
-              icon={CheckIcon}
-              enabled={isMarkAsDoneFeatureSupported(notification.account)}
-              testid="notification-mark-as-done"
               action={actionMarkAsDone}
+              enabled={isMarkAsDoneFeatureSupported(notification.account)}
+              icon={CheckIcon}
+              label="Mark as done"
+              testid="notification-mark-as-done"
             />
 
             <HoverButton
-              label="Mark as read"
-              icon={ReadIcon}
-              testid="notification-mark-as-read"
               action={actionMarkAsRead}
+              icon={ReadIcon}
+              label="Mark as read"
+              testid="notification-mark-as-read"
             />
 
             <HoverButton
-              label="Unsubscribe from thread"
-              icon={BellSlashIcon}
-              testid="notification-unsubscribe-from-thread"
               action={actionUnsubscribeFromThread}
+              icon={BellSlashIcon}
+              label="Unsubscribe from thread"
+              testid="notification-unsubscribe-from-thread"
             />
           </HoverGroup>
         )}
       </Stack>
-    </Box>
+    </div>
   );
 };

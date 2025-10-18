@@ -1,6 +1,5 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
 
 import { mockAuth, mockSettings } from '../../__mocks__/state-mocks';
 import { AppContext } from '../../context/App';
@@ -23,9 +22,7 @@ describe('renderer/components/settings/SystemSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <SystemSettings />
-          </MemoryRouter>
+          <SystemSettings />
         </AppContext.Provider>,
       );
     });
@@ -46,9 +43,7 @@ describe('renderer/components/settings/SystemSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <SystemSettings />
-          </MemoryRouter>
+          <SystemSettings />
         </AppContext.Provider>,
       );
     });
@@ -57,34 +52,6 @@ describe('renderer/components/settings/SystemSettings.tsx', () => {
 
     expect(updateSetting).toHaveBeenCalledTimes(1);
     expect(updateSetting).toHaveBeenCalledWith('keyboardShortcut', false);
-  });
-
-  it('should toggle the showNotificationsCountInTray checkbox', async () => {
-    await act(async () => {
-      render(
-        <AppContext.Provider
-          value={{
-            auth: mockAuth,
-            settings: mockSettings,
-            updateSetting,
-          }}
-        >
-          <MemoryRouter>
-            <SystemSettings />
-          </MemoryRouter>
-        </AppContext.Provider>,
-      );
-    });
-
-    await userEvent.click(
-      screen.getByTestId('checkbox-showNotificationsCountInTray'),
-    );
-
-    expect(updateSetting).toHaveBeenCalledTimes(1);
-    expect(updateSetting).toHaveBeenCalledWith(
-      'showNotificationsCountInTray',
-      false,
-    );
   });
 
   it('should toggle the showNotifications checkbox', async () => {
@@ -97,9 +64,7 @@ describe('renderer/components/settings/SystemSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <SystemSettings />
-          </MemoryRouter>
+          <SystemSettings />
         </AppContext.Provider>,
       );
     });
@@ -120,9 +85,7 @@ describe('renderer/components/settings/SystemSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <SystemSettings />
-          </MemoryRouter>
+          <SystemSettings />
         </AppContext.Provider>,
       );
 
@@ -140,9 +103,7 @@ describe('renderer/components/settings/SystemSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <SystemSettings />
-          </MemoryRouter>
+          <SystemSettings />
         </AppContext.Provider>,
       );
 
@@ -158,9 +119,7 @@ describe('renderer/components/settings/SystemSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <SystemSettings />
-          </MemoryRouter>
+          <SystemSettings />
         </AppContext.Provider>,
       );
 
@@ -179,9 +138,7 @@ describe('renderer/components/settings/SystemSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <SystemSettings />
-          </MemoryRouter>
+          <SystemSettings />
         </AppContext.Provider>,
       );
 
@@ -203,9 +160,7 @@ describe('renderer/components/settings/SystemSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <SystemSettings />
-          </MemoryRouter>
+          <SystemSettings />
         </AppContext.Provider>,
       );
 
@@ -214,29 +169,6 @@ describe('renderer/components/settings/SystemSettings.tsx', () => {
       expect(updateSetting).toHaveBeenCalledTimes(1);
       expect(updateSetting).toHaveBeenCalledWith('notificationVolume', 20);
     });
-  });
-
-  it('should toggle the useAlternateIdleIcon checkbox', async () => {
-    await act(async () => {
-      render(
-        <AppContext.Provider
-          value={{
-            auth: mockAuth,
-            settings: mockSettings,
-            updateSetting,
-          }}
-        >
-          <MemoryRouter>
-            <SystemSettings />
-          </MemoryRouter>
-        </AppContext.Provider>,
-      );
-    });
-
-    await userEvent.click(screen.getByTestId('checkbox-useAlternateIdleIcon'));
-
-    expect(updateSetting).toHaveBeenCalledTimes(1);
-    expect(updateSetting).toHaveBeenCalledWith('useAlternateIdleIcon', true);
   });
 
   it('should toggle the openAtStartup checkbox', async () => {
@@ -249,9 +181,7 @@ describe('renderer/components/settings/SystemSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <SystemSettings />
-          </MemoryRouter>
+          <SystemSettings />
         </AppContext.Provider>,
       );
     });

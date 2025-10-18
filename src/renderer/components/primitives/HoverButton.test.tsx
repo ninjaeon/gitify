@@ -1,5 +1,6 @@
-import { MarkGithubIcon } from '@primer/octicons-react';
 import { render } from '@testing-library/react';
+
+import { MarkGithubIcon } from '@primer/octicons-react';
 
 import { HoverButton } from './HoverButton';
 
@@ -9,10 +10,10 @@ describe('renderer/components/primitives/HoverButton.tsx', () => {
 
     const tree = render(
       <HoverButton
-        label="Hover Button"
-        icon={MarkGithubIcon}
-        testid="hover-button"
         action={mockAction}
+        icon={MarkGithubIcon}
+        label="Hover Button"
+        testid="hover-button"
       />,
     );
     expect(tree).toMatchSnapshot();
@@ -23,11 +24,11 @@ describe('renderer/components/primitives/HoverButton.tsx', () => {
 
     const tree = render(
       <HoverButton
-        label="Hover Button"
-        icon={MarkGithubIcon}
-        testid="hover-button"
-        enabled={false}
         action={mockAction}
+        enabled={false}
+        icon={MarkGithubIcon}
+        label="Hover Button"
+        testid="hover-button"
       />,
     );
     expect(tree).toMatchSnapshot();

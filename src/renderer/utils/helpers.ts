@@ -4,17 +4,15 @@ import {
   ChevronRightIcon,
 } from '@primer/octicons-react';
 
-import { logError, logWarn } from '../../shared/logger';
+import { Constants } from '../constants';
 import type { Chevron, Hostname, Link } from '../types';
 import type { Notification } from '../typesGitHub';
 import { getHtmlUrl, getLatestDiscussion } from './api/client';
 import type { PlatformType } from './auth/types';
-import { Constants } from './constants';
-import {
-  getCheckSuiteAttributes,
-  getLatestDiscussionComment,
-  getWorkflowRunAttributes,
-} from './subject';
+import { rendererLogError, rendererLogWarn } from './logger';
+import { getCheckSuiteAttributes } from './notifications/handlers/checkSuite';
+import { getClosestDiscussionCommentOrReply } from './notifications/handlers/discussion';
+import { getWorkflowRunAttributes } from './notifications/handlers/workflowRun';
 
 export function getPlatformFromHostname(hostname: string): PlatformType {
   return hostname.endsWith(Constants.DEFAULT_AUTH_OPTIONS.hostname)
@@ -29,10 +27,8 @@ export function isEnterpriseServerHost(hostname: Hostname): boolean {
 export function generateNotificationReferrerId(
   notification: Notification,
 ): string {
-  const buffer = Buffer.from(
-    `018:NotificationThread${notification.id}:${notification.account.user.id}`,
-  );
-  return buffer.toString('base64');
+  const raw = `018:NotificationThread${notification.id}:${notification.account.user.id}`;
+  return btoa(raw);
 }
 
 export function getCheckSuiteUrl(notification: Notification): Link {
@@ -81,7 +77,7 @@ export function actionsURL(repositoryURL: string, filters: string[]): Link {
   }
 
   // Note: the GitHub Actions UI cannot handle encoded '+' characters.
-  return url.toString().replace(/%2B/g, '+') as Link;
+  return url.toString().replaceAll('%2B', '+') as Link;
 }
 
 async function getDiscussionUrl(notification: Notification): Promise<Link> {
@@ -93,10 +89,12 @@ async function getDiscussionUrl(notification: Notification): Promise<Link> {
   if (discussion) {
     url.href = discussion.url;
 
-    const latestComment = getLatestDiscussionComment(discussion.comments.nodes);
-
-    if (latestComment) {
-      url.hash = `#discussioncomment-${latestComment.databaseId}`;
+    const closestComment = getClosestDiscussionCommentOrReply(
+      notification,
+      discussion.comments.nodes,
+    );
+    if (closestComment) {
+      url.hash = `#discussioncomment-${closestComment.databaseId}`;
     }
   }
 
@@ -150,14 +148,14 @@ export async function generateGitHubWebUrl(
       }
     }
   } catch (err) {
-    logError(
+    rendererLogError(
       'generateGitHubWebUrl',
       'Failed to resolve specific notification html url for',
       err,
       notification,
     );
 
-    logWarn(
+    rendererLogWarn(
       'generateGitHubWebUrl',
       `Falling back to repository root url: ${notification.repository.full_name}`,
     );
@@ -169,21 +167,6 @@ export async function generateGitHubWebUrl(
   );
 
   return url.toString() as Link;
-}
-
-export function formatForDisplay(text: string[]): string {
-  if (!text) {
-    return '';
-  }
-
-  return text
-    .join(' ')
-    .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space between lowercase character followed by an uppercase character
-    .replace(/_/g, ' ') // Replace underscores with spaces
-    .replace(/\w+/g, (word) => {
-      // Convert to proper case (capitalize first letter of each word)
-      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-    });
 }
 
 export function getChevronDetails(

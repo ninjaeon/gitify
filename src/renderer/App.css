@@ -2,25 +2,7 @@
 @import "tailwindcss";
 
 /** GitHub Primer Design System */
-/* Size & Typography */
-@import "@primer/primitives/dist/css/base/size/size.css";
-@import "@primer/primitives/dist/css/base/typography/typography.css";
-@import "@primer/primitives/dist/css/functional/size/border.css";
-@import "@primer/primitives/dist/css/functional/size/breakpoints.css";
-@import "@primer/primitives/dist/css/functional/size/size.css";
-@import "@primer/primitives/dist/css/functional/size/viewport.css";
-@import "@primer/primitives/dist/css/functional/typography/typography.css";
-
-/* Themes and Colors */
-@import "@primer/primitives/dist/css/functional/themes/light.css";
-@import "@primer/primitives/dist/css/functional/themes/light-tritanopia.css";
-@import "@primer/primitives/dist/css/functional/themes/light-high-contrast.css";
-@import "@primer/primitives/dist/css/functional/themes/light-colorblind.css";
-@import "@primer/primitives/dist/css/functional/themes/dark.css";
-@import "@primer/primitives/dist/css/functional/themes/dark-colorblind.css";
-@import "@primer/primitives/dist/css/functional/themes/dark-dimmed.css";
-@import "@primer/primitives/dist/css/functional/themes/dark-high-contrast.css";
-@import "@primer/primitives/dist/css/functional/themes/dark-tritanopia.css";
+@import "@primer/css/dist/primer.css";
 
 /** Tailwind CSS Configuration */
 @config '../../tailwind.config.ts';
@@ -50,9 +32,9 @@ body,
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   margin: 0;
   cursor: default;
 }

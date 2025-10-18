@@ -3,20 +3,19 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from '@primer/octicons-react';
+
 import type { AxiosPromise, AxiosResponse } from 'axios';
 
-import * as logger from '../../shared/logger';
 import { mockPersonalAccessTokenAccount } from '../__mocks__/state-mocks';
 import type { Hostname, Link } from '../types';
 import type { SubjectType } from '../typesGitHub';
+import * as logger from '../utils/logger';
 import {
   mockGraphQLResponse,
   mockSingleNotification,
 } from './api/__mocks__/response-mocks';
 import * as apiRequests from './api/request';
-
 import {
-  formatForDisplay,
   generateGitHubWebUrl,
   generateNotificationReferrerId,
   getChevronDetails,
@@ -484,7 +483,9 @@ describe('renderer/utils/helpers.ts', () => {
       });
 
       it('defaults when exception handled during specialized html enrichment process', async () => {
-        const logErrorSpy = jest.spyOn(logger, 'logError').mockImplementation();
+        const rendererLogErrorSpy = jest
+          .spyOn(logger, 'rendererLogError')
+          .mockImplementation();
 
         const subject = {
           title: 'generate github web url unit tests',
@@ -512,24 +513,8 @@ describe('renderer/utils/helpers.ts', () => {
         expect(result).toBe(
           `https://github.com/gitify-app/notifications-test?${mockNotificationReferrer}`,
         );
-        expect(logErrorSpy).toHaveBeenCalledTimes(2);
+        expect(rendererLogErrorSpy).toHaveBeenCalledTimes(2);
       });
-    });
-  });
-
-  describe('formatting', () => {
-    it('formatForDisplay', () => {
-      expect(formatForDisplay(null)).toBe('');
-      expect(formatForDisplay([])).toBe('');
-      expect(formatForDisplay(['open', 'PullRequest'])).toBe(
-        'Open Pull Request',
-      );
-      expect(formatForDisplay(['OUTDATED', 'Discussion'])).toBe(
-        'Outdated Discussion',
-      );
-      expect(formatForDisplay(['not_planned', 'Issue'])).toBe(
-        'Not Planned Issue',
-      );
     });
   });
 

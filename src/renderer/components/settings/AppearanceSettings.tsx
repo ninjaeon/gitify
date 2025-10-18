@@ -1,4 +1,3 @@
-import { webFrame } from 'electron';
 import { type FC, useContext, useState } from 'react';
 
 import {
@@ -30,7 +29,7 @@ const DELAY = 200;
 export const AppearanceSettings: FC = () => {
   const { auth, settings, updateSetting } = useContext(AppContext);
   const [zoomPercentage, setZoomPercentage] = useState(
-    zoomLevelToPercentage(webFrame.getZoomLevel()),
+    zoomLevelToPercentage(window.gitify.zoom.getLevel()),
   );
 
   window.addEventListener('resize', () => {
@@ -38,7 +37,9 @@ export const AppearanceSettings: FC = () => {
     clearTimeout(timeout);
     // start timing for event "completion"
     timeout = setTimeout(() => {
-      const zoomPercentage = zoomLevelToPercentage(webFrame.getZoomLevel());
+      const zoomPercentage = zoomLevelToPercentage(
+        window.gitify.zoom.getLevel(),
+      );
       setZoomPercentage(zoomPercentage);
       updateSetting('zoomPercentage', zoomPercentage);
     }, DELAY);
@@ -50,30 +51,26 @@ export const AppearanceSettings: FC = () => {
 
       <Stack direction="vertical" gap="condensed">
         <Stack
-          direction="horizontal"
-          gap="condensed"
           align="center"
           className="text-sm"
+          direction="horizontal"
+          gap="condensed"
         >
-          <FieldLabel name="theme" label="Theme:" />
+          <FieldLabel label="Theme:" name="theme" />
           <Select
-            id="theme"
-            value={settings.theme}
+            data-testid="settings-theme"
             onChange={(evt) =>
               updateSetting('theme', evt.target.value as Theme)
             }
-            data-testid="settings-theme"
+            value={settings.theme}
           >
             <Select.OptGroup label="System">
               <Select.Option value={Theme.SYSTEM}>System</Select.Option>
             </Select.OptGroup>
             <Select.OptGroup label="Light">
               <Select.Option value={Theme.LIGHT}>Light default</Select.Option>
-              <Select.Option value={Theme.LIGHT_HIGH_CONTRAST}>
-                Light high contrast
-              </Select.Option>
               <Select.Option value={Theme.LIGHT_COLORBLIND}>
-                Light Protanopia & Deuteranopia
+                Light colorblind
               </Select.Option>
               <Select.Option value={Theme.LIGHT_TRITANOPIA}>
                 Light Tritanopia
@@ -81,95 +78,114 @@ export const AppearanceSettings: FC = () => {
             </Select.OptGroup>
             <Select.OptGroup label="Dark">
               <Select.Option value={Theme.DARK}>Dark default</Select.Option>
-              <Select.Option value={Theme.DARK_HIGH_CONTRAST}>
-                Dark high contrast
-              </Select.Option>
               <Select.Option value={Theme.DARK_COLORBLIND}>
-                Dark Protanopia & Deuteranopia
+                Dark colorblind
               </Select.Option>
               <Select.Option value={Theme.DARK_TRITANOPIA}>
                 Dark Tritanopia
               </Select.Option>
-              <Select.Option value={Theme.DARK_DIMMED}>
-                Dark dimmed
-              </Select.Option>
+              <Select.Option value={Theme.DARK_DIMMED}>Soft dark</Select.Option>
             </Select.OptGroup>
           </Select>
         </Stack>
 
+        <Checkbox
+          checked={settings.increaseContrast}
+          label="Increase contrast"
+          name="increaseContrast"
+          onChange={(evt) =>
+            updateSetting('increaseContrast', evt.target.checked)
+          }
+          tooltip={
+            <Text>
+              Enable high contrast colors for improved legibility. This
+              increases color contrast across the UI and may affect some
+              color-specific themes.
+            </Text>
+          }
+        />
+
         <Stack
-          direction="horizontal"
-          gap="condensed"
           align="center"
           className="text-sm"
+          direction="horizontal"
+          gap="condensed"
         >
-          <FieldLabel name="zoom" label="Zoom:" />
+          <FieldLabel label="Zoom:" name="zoom" />
 
           <ButtonGroup className="ml-2">
             <IconButton
               aria-label="Zoom out"
-              size="small"
+              data-testid="settings-zoom-out"
               icon={ZoomOutIcon}
-              unsafeDisableTooltip={true}
               onClick={() =>
                 zoomPercentage > 0 &&
-                webFrame.setZoomLevel(
+                window.gitify.zoom.setLevel(
                   zoomPercentageToLevel(zoomPercentage - 10),
                 )
               }
-              data-testid="settings-zoom-out"
+              size="small"
+              unsafeDisableTooltip={true}
             />
 
-            <Button aria-label="Zoom percentage" size="small" disabled>
+            <Button aria-label="Zoom percentage" disabled size="small">
               {zoomPercentage.toFixed(0)}%
             </Button>
 
             <IconButton
               aria-label="Zoom in"
-              size="small"
+              data-testid="settings-zoom-in"
               icon={ZoomInIcon}
-              unsafeDisableTooltip={true}
               onClick={() =>
                 zoomPercentage < 120 &&
-                webFrame.setZoomLevel(
+                window.gitify.zoom.setLevel(
                   zoomPercentageToLevel(zoomPercentage + 10),
                 )
               }
-              data-testid="settings-zoom-in"
+              size="small"
+              unsafeDisableTooltip={true}
             />
 
             <IconButton
               aria-label="Reset zoom"
-              size="small"
-              variant="danger"
-              icon={SyncIcon}
-              unsafeDisableTooltip={true}
-              onClick={() => webFrame.setZoomLevel(0)}
               data-testid="settings-zoom-reset"
+              icon={SyncIcon}
+              onClick={() => window.gitify.zoom.setLevel(0)}
+              size="small"
+              unsafeDisableTooltip={true}
+              variant="danger"
             />
           </ButtonGroup>
         </Stack>
 
         <Checkbox
-          name="showAccountHeader"
-          label="Show account header"
           checked={settings.showAccountHeader}
-          visible={!hasMultipleAccounts(auth)}
+          label="Show account header"
+          name="showAccountHeader"
           onChange={(evt) =>
             updateSetting('showAccountHeader', evt.target.checked)
           }
+          tooltip={
+            <Text>
+              When enabled, displays an account header (avatar, username and
+              quick links) above the notifications list.
+            </Text>
+          }
+          visible={!hasMultipleAccounts(auth)}
         />
 
         <Checkbox
-          name="wrapNotificationTitle"
-          label="Show full notification title"
           checked={settings.wrapNotificationTitle}
+          label="Show full notification title"
+          name="wrapNotificationTitle"
           onChange={(evt) =>
             updateSetting('wrapNotificationTitle', evt.target.checked)
           }
           tooltip={
             <Text>
-              Wrap long notification titles instead of truncating them.
+              Wrap long notification titles onto multiple lines instead of
+              truncating with an ellipsis. This shows the full title but may
+              increase the height of the notification list.
             </Text>
           }
         />

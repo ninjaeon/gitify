@@ -5,6 +5,7 @@ import { PersonIcon, XCircleIcon } from '@primer/octicons-react';
 import { Button, IconButton, Stack, Tooltip } from '@primer/react';
 
 import { APPLICATION } from '../../../shared/constants';
+
 import { getAppVersion, quitApp } from '../../utils/comms';
 import { openGitifyReleaseNotes } from '../../utils/links';
 import { Footer } from '../primitives/Footer';
@@ -15,48 +16,44 @@ export const SettingsFooter: FC = () => {
 
   useEffect(() => {
     (async () => {
-      if (process.env.NODE_ENV === 'development') {
-        setAppVersion('dev');
-      } else {
-        const result = await getAppVersion();
-        setAppVersion(`v${result}`);
-      }
+      const result = await getAppVersion();
+      setAppVersion(result);
     })();
   }, []);
 
   return (
     <Footer justify="space-between">
       <Stack direction="horizontal">
-        <Tooltip text="View release notes" direction="n">
+        <Tooltip direction="n" text="View release notes">
           <Button
-            onClick={() => openGitifyReleaseNotes(appVersion)}
             data-testid="settings-release-notes"
+            onClick={() => openGitifyReleaseNotes(appVersion)}
           >
             {APPLICATION.NAME} {appVersion}
           </Button>
         </Tooltip>
       </Stack>
       <Stack direction="horizontal" gap="normal">
-        <Tooltip text="Accounts" direction="n">
+        <Tooltip direction="n" text="Accounts">
           <IconButton
             aria-label="Accounts"
+            data-testid="settings-accounts"
             icon={PersonIcon}
             onClick={() => {
               navigate('/accounts');
             }}
-            data-testid="settings-accounts"
           />
         </Tooltip>
 
-        <Tooltip text={`Quit ${APPLICATION.NAME}`} direction="nw">
+        <Tooltip direction="nw" text={`Quit ${APPLICATION.NAME}`}>
           <IconButton
             aria-label={`Quit ${APPLICATION.NAME}`}
-            variant="danger"
+            data-testid="settings-quit"
             icon={XCircleIcon}
             onClick={() => {
               quitApp();
             }}
-            data-testid="settings-quit"
+            variant="danger"
           />
         </Tooltip>
       </Stack>

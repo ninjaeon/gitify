@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`renderer/components/layout/AppLayout.tsx should render itself & its children 1`] = `
 {
@@ -6,10 +6,10 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
   "baseElement": <body>
     <div>
       <div
-        class="Box-sc-g0xbh4-0 flex flex-col min-h-screen bg-gitify-background"
+        class="flex flex-col min-h-screen bg-gitify-background"
       >
         <div
-          class="Stack__StyledStack-sc-x3xa2i-0 oXGHI fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white"
+          class="fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white prc-Stack-Stack-WJVsK"
           data-align="stretch"
           data-direction="vertical"
           data-justify="space-between"
@@ -17,7 +17,7 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
           data-wrap="nowrap"
         >
           <div
-            class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+            class="prc-Stack-Stack-WJVsK"
             data-align="center"
             data-direction="vertical"
             data-gap="condensed"
@@ -26,21 +26,21 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
             data-wrap="nowrap"
           >
             <button
-              aria-describedby="«r1»-loading-announcement «r0»"
+              aria-describedby="_r_1_-loading-announcement _r_0_"
               aria-label="Gitify"
-              class="types__StyledButton-sc-ws60qy-0 gbYXLg"
+              class="prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
               data-component="IconButton"
               data-loading="false"
               data-no-visuals="true"
               data-size="small"
               data-testid="sidebar-home"
-              sx="[object Object]"
+              data-variant="invisible"
               type="button"
             >
               <svg
+                aria-hidden="true"
                 aria-label="Gitify Logo"
-                class="size-5"
-                role="img"
+                class="size-2.5"
                 viewBox="0 0 500 500"
                 xmlns="https://www.w3.org/2000/svg"
                 xmlns:xlink="https://www.w3.org/1999/xlink"
@@ -83,23 +83,25 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
               </svg>
             </button>
             <span
-              class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+              aria-hidden="true"
+              class="prc-TooltipV2-Tooltip-cYMVY"
               data-direction="e"
-              id="«r0»"
+              id="_r_0_"
               popover="auto"
               role="tooltip"
             >
               Home
             </span>
             <button
-              aria-describedby="«r3»-loading-announcement «r2»"
+              aria-describedby="_r_3_-loading-announcement _r_2_"
               aria-label="Notifications"
-              class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+              class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
               data-component="IconButton"
               data-loading="false"
               data-no-visuals="true"
               data-size="small"
               data-testid="sidebar-notifications"
+              data-variant="invisible"
               sx="[object Object]"
               type="button"
             >
@@ -121,23 +123,25 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
               </svg>
             </button>
             <span
-              class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+              aria-hidden="true"
+              class="prc-TooltipV2-Tooltip-cYMVY"
               data-direction="e"
-              id="«r2»"
+              id="_r_2_"
               popover="auto"
               role="tooltip"
             >
-              0 unread notifications
+              0 unread notifications ↗
             </span>
             <button
-              aria-describedby="«r5»-loading-announcement"
-              aria-labelledby="«r4»"
-              class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+              aria-describedby="_r_5_-loading-announcement"
+              aria-labelledby="_r_4_"
+              class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
               data-component="IconButton"
               data-loading="false"
               data-no-visuals="true"
               data-size="small"
               data-testid="sidebar-my-issues"
+              data-variant="invisible"
               sx="[object Object]"
               type="button"
             >
@@ -163,22 +167,23 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
             </button>
             <span
               aria-hidden="true"
-              class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+              class="prc-TooltipV2-Tooltip-cYMVY"
               data-direction="e"
-              id="«r4»"
+              id="_r_4_"
               popover="auto"
             >
-              My issues
+              My issues ↗
             </span>
             <button
-              aria-describedby="«r7»-loading-announcement"
-              aria-labelledby="«r6»"
-              class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+              aria-describedby="_r_7_-loading-announcement"
+              aria-labelledby="_r_6_"
+              class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
               data-component="IconButton"
               data-loading="false"
               data-no-visuals="true"
               data-size="small"
               data-testid="sidebar-my-pull-requests"
+              data-variant="invisible"
               sx="[object Object]"
               type="button"
             >
@@ -201,16 +206,16 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
             </button>
             <span
               aria-hidden="true"
-              class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+              class="prc-TooltipV2-Tooltip-cYMVY"
               data-direction="e"
-              id="«r6»"
+              id="_r_6_"
               popover="auto"
             >
-              My pull requests
+              My pull requests ↗
             </span>
           </div>
           <div
-            class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+            class="prc-Stack-Stack-WJVsK"
             data-align="center"
             data-direction="vertical"
             data-gap="condensed"
@@ -219,14 +224,15 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
             data-wrap="nowrap"
           >
             <button
-              aria-describedby="«r9»-loading-announcement"
-              aria-labelledby="«r8»"
-              class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+              aria-describedby="_r_9_-loading-announcement"
+              aria-labelledby="_r_8_"
+              class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
               data-component="IconButton"
               data-loading="false"
               data-no-visuals="true"
               data-size="small"
               data-testid="sidebar-quit"
+              data-variant="invisible"
               sx="[object Object]"
               type="button"
             >
@@ -249,9 +255,9 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
             </button>
             <span
               aria-hidden="true"
-              class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+              class="prc-TooltipV2-Tooltip-cYMVY"
               data-direction="e"
-              id="«r8»"
+              id="_r_8_"
               popover="auto"
             >
               Quit Gitify
@@ -259,7 +265,7 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
           </div>
         </div>
         <div
-          class="Box-sc-g0xbh4-0 flex-1 pl-sidebar"
+          class="flex-1 pl-sidebar"
         >
           Test
         </div>
@@ -268,10 +274,10 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
   </body>,
   "container": <div>
     <div
-      class="Box-sc-g0xbh4-0 flex flex-col min-h-screen bg-gitify-background"
+      class="flex flex-col min-h-screen bg-gitify-background"
     >
       <div
-        class="Stack__StyledStack-sc-x3xa2i-0 oXGHI fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white"
+        class="fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white prc-Stack-Stack-WJVsK"
         data-align="stretch"
         data-direction="vertical"
         data-justify="space-between"
@@ -279,7 +285,7 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
         data-wrap="nowrap"
       >
         <div
-          class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+          class="prc-Stack-Stack-WJVsK"
           data-align="center"
           data-direction="vertical"
           data-gap="condensed"
@@ -288,21 +294,21 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
           data-wrap="nowrap"
         >
           <button
-            aria-describedby="«r1»-loading-announcement «r0»"
+            aria-describedby="_r_1_-loading-announcement _r_0_"
             aria-label="Gitify"
-            class="types__StyledButton-sc-ws60qy-0 gbYXLg"
+            class="prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-home"
-            sx="[object Object]"
+            data-variant="invisible"
             type="button"
           >
             <svg
+              aria-hidden="true"
               aria-label="Gitify Logo"
-              class="size-5"
-              role="img"
+              class="size-2.5"
               viewBox="0 0 500 500"
               xmlns="https://www.w3.org/2000/svg"
               xmlns:xlink="https://www.w3.org/1999/xlink"
@@ -345,23 +351,25 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
             </svg>
           </button>
           <span
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            aria-hidden="true"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«r0»"
+            id="_r_0_"
             popover="auto"
             role="tooltip"
           >
             Home
           </span>
           <button
-            aria-describedby="«r3»-loading-announcement «r2»"
+            aria-describedby="_r_3_-loading-announcement _r_2_"
             aria-label="Notifications"
-            class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-notifications"
+            data-variant="invisible"
             sx="[object Object]"
             type="button"
           >
@@ -383,23 +391,25 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
             </svg>
           </button>
           <span
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            aria-hidden="true"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«r2»"
+            id="_r_2_"
             popover="auto"
             role="tooltip"
           >
-            0 unread notifications
+            0 unread notifications ↗
           </span>
           <button
-            aria-describedby="«r5»-loading-announcement"
-            aria-labelledby="«r4»"
-            class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+            aria-describedby="_r_5_-loading-announcement"
+            aria-labelledby="_r_4_"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-my-issues"
+            data-variant="invisible"
             sx="[object Object]"
             type="button"
           >
@@ -425,22 +435,23 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
           </button>
           <span
             aria-hidden="true"
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«r4»"
+            id="_r_4_"
             popover="auto"
           >
-            My issues
+            My issues ↗
           </span>
           <button
-            aria-describedby="«r7»-loading-announcement"
-            aria-labelledby="«r6»"
-            class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+            aria-describedby="_r_7_-loading-announcement"
+            aria-labelledby="_r_6_"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-my-pull-requests"
+            data-variant="invisible"
             sx="[object Object]"
             type="button"
           >
@@ -463,16 +474,16 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
           </button>
           <span
             aria-hidden="true"
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«r6»"
+            id="_r_6_"
             popover="auto"
           >
-            My pull requests
+            My pull requests ↗
           </span>
         </div>
         <div
-          class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+          class="prc-Stack-Stack-WJVsK"
           data-align="center"
           data-direction="vertical"
           data-gap="condensed"
@@ -481,14 +492,15 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
           data-wrap="nowrap"
         >
           <button
-            aria-describedby="«r9»-loading-announcement"
-            aria-labelledby="«r8»"
-            class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+            aria-describedby="_r_9_-loading-announcement"
+            aria-labelledby="_r_8_"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-quit"
+            data-variant="invisible"
             sx="[object Object]"
             type="button"
           >
@@ -511,9 +523,9 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
           </button>
           <span
             aria-hidden="true"
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«r8»"
+            id="_r_8_"
             popover="auto"
           >
             Quit Gitify
@@ -521,7 +533,7 @@ exports[`renderer/components/layout/AppLayout.tsx should render itself & its chi
         </div>
       </div>
       <div
-        class="Box-sc-g0xbh4-0 flex-1 pl-sidebar"
+        class="flex-1 pl-sidebar"
       >
         Test
       </div>

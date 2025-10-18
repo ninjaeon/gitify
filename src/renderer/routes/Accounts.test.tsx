@@ -1,7 +1,7 @@
-import { BaseStyles, ThemeProvider } from '@primer/react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+
+import { BaseStyles, ThemeProvider } from '@primer/react';
 
 import {
   mockAuth,
@@ -44,9 +44,7 @@ describe('renderer/routes/Accounts.tsx', () => {
               settings: mockSettings,
             }}
           >
-            <MemoryRouter>
-              <AccountsRoute />
-            </MemoryRouter>
+            <AccountsRoute />
           </AppContext.Provider>,
         );
       });
@@ -63,9 +61,7 @@ describe('renderer/routes/Accounts.tsx', () => {
               settings: mockSettings,
             }}
           >
-            <MemoryRouter>
-              <AccountsRoute />
-            </MemoryRouter>
+            <AccountsRoute />
           </AppContext.Provider>,
         );
       });
@@ -92,9 +88,7 @@ describe('renderer/routes/Accounts.tsx', () => {
               settings: mockSettings,
             }}
           >
-            <MemoryRouter>
-              <AccountsRoute />
-            </MemoryRouter>
+            <AccountsRoute />
           </AppContext.Provider>,
         );
       });
@@ -122,9 +116,7 @@ describe('renderer/routes/Accounts.tsx', () => {
               settings: mockSettings,
             }}
           >
-            <MemoryRouter>
-              <AccountsRoute />
-            </MemoryRouter>
+            <AccountsRoute />
           </AppContext.Provider>,
         );
       });
@@ -150,9 +142,7 @@ describe('renderer/routes/Accounts.tsx', () => {
               settings: mockSettings,
             }}
           >
-            <MemoryRouter>
-              <AccountsRoute />
-            </MemoryRouter>
+            <AccountsRoute />
           </AppContext.Provider>,
         );
       });
@@ -187,9 +177,7 @@ describe('renderer/routes/Accounts.tsx', () => {
               settings: mockSettings,
             }}
           >
-            <MemoryRouter>
-              <AccountsRoute />
-            </MemoryRouter>
+            <AccountsRoute />
           </AppContext.Provider>,
         );
       });
@@ -223,9 +211,7 @@ describe('renderer/routes/Accounts.tsx', () => {
               settings: mockSettings,
             }}
           >
-            <MemoryRouter>
-              <AccountsRoute />
-            </MemoryRouter>
+            <AccountsRoute />
           </AppContext.Provider>,
         );
       });
@@ -250,9 +236,7 @@ describe('renderer/routes/Accounts.tsx', () => {
               settings: mockSettings,
             }}
           >
-            <MemoryRouter>
-              <AccountsRoute />
-            </MemoryRouter>
+            <AccountsRoute />
           </AppContext.Provider>,
         );
       });
@@ -274,7 +258,7 @@ describe('renderer/routes/Accounts.tsx', () => {
 
     it('should logout', async () => {
       const logoutFromAccountMock = jest.fn();
-      const updateTrayIconMock = jest.spyOn(comms, 'updateTrayIcon');
+      const updateTrayColorMock = jest.spyOn(comms, 'updateTrayColor');
       const updateTrayTitleMock = jest.spyOn(comms, 'updateTrayTitle');
 
       await act(async () => {
@@ -288,9 +272,7 @@ describe('renderer/routes/Accounts.tsx', () => {
               logoutFromAccount: logoutFromAccountMock,
             }}
           >
-            <MemoryRouter>
-              <AccountsRoute />
-            </MemoryRouter>
+            <AccountsRoute />
           </AppContext.Provider>,
         );
       });
@@ -298,10 +280,11 @@ describe('renderer/routes/Accounts.tsx', () => {
       await userEvent.click(screen.getByTestId('account-logout'));
 
       expect(logoutFromAccountMock).toHaveBeenCalledTimes(1);
-      expect(updateTrayIconMock).toHaveBeenCalledTimes(1);
-      expect(updateTrayIconMock).toHaveBeenCalledWith();
+      expect(updateTrayColorMock).toHaveBeenCalledTimes(1);
+      expect(updateTrayColorMock).toHaveBeenCalledWith();
       expect(updateTrayTitleMock).toHaveBeenCalledTimes(1);
       expect(updateTrayTitleMock).toHaveBeenCalledWith();
+
       expect(mockNavigate).toHaveBeenNthCalledWith(1, -1);
     });
   });
@@ -321,9 +304,7 @@ describe('renderer/routes/Accounts.tsx', () => {
                   loginWithGitHubApp: mockLoginWithGitHubApp,
                 }}
               >
-                <MemoryRouter>
-                  <AccountsRoute />
-                </MemoryRouter>
+                <AccountsRoute />
               </AppContext.Provider>
             </BaseStyles>
           </ThemeProvider>,
@@ -347,9 +328,7 @@ describe('renderer/routes/Accounts.tsx', () => {
                   settings: mockSettings,
                 }}
               >
-                <MemoryRouter>
-                  <AccountsRoute />
-                </MemoryRouter>
+                <AccountsRoute />
               </AppContext.Provider>
             </BaseStyles>
           </ThemeProvider>,
@@ -379,9 +358,7 @@ describe('renderer/routes/Accounts.tsx', () => {
                   settings: mockSettings,
                 }}
               >
-                <MemoryRouter>
-                  <AccountsRoute />
-                </MemoryRouter>
+                <AccountsRoute />
               </AppContext.Provider>
             </BaseStyles>
           </ThemeProvider>,

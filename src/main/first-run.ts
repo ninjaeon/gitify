@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+
 import { app, dialog } from 'electron';
 
 import { APPLICATION } from '../shared/constants';
@@ -12,12 +13,18 @@ export async function onFirstRunMaybe() {
   }
 }
 
-// Ask user if the app should be moved to the applications folder.
+/**
+ * Ask user if the app should be moved to the applications folder (masOS).
+ */
 async function promptMoveToApplicationsFolder() {
-  if (!isMacOS()) return;
+  if (!isMacOS()) {
+    return;
+  }
 
   const isDevMode = !!process.defaultApp;
-  if (isDevMode || app.isInApplicationsFolder()) return;
+  if (isDevMode || app.isInApplicationsFolder()) {
+    return;
+  }
 
   const { response } = await dialog.showMessageBox({
     type: 'question',
@@ -36,7 +43,10 @@ const getConfigPath = () => {
   return path.join(userDataPath, 'FirstRun', APPLICATION.FIRST_RUN_FOLDER);
 };
 
-// Whether or not the app is being run for the first time.
+/**
+ * Determine if this is the first run of the application by checking for the existence of a specific file.
+ * @returns true if this is the first run, false otherwise
+ */
 function isFirstRun() {
   const configPath = getConfigPath();
 

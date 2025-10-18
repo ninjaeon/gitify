@@ -1,10 +1,10 @@
 import { type FC, useContext, useMemo } from 'react';
 
 import { AllRead } from '../components/AllRead';
-import { Oops } from '../components/Oops';
 import { Contents } from '../components/layout/Contents';
 import { Page } from '../components/layout/Page';
 import { AccountNotifications } from '../components/notifications/AccountNotifications';
+import { Oops } from '../components/Oops';
 import { AppContext } from '../context/App';
 import { getAccountUUID } from '../utils/auth/utils';
 import { getNotificationCount } from '../utils/notifications/notifications';
@@ -37,19 +37,21 @@ export const NotificationsRoute: FC = () => {
   }
 
   return (
-    <Page id="notifications">
+    <Page testId="notifications">
       <Contents paddingHorizontal={false}>
-        {notifications.map((accountNotifications) => (
-          <AccountNotifications
-            key={getAccountUUID(accountNotifications.account)}
-            account={accountNotifications.account}
-            notifications={accountNotifications.notifications}
-            error={accountNotifications.error}
-            showAccountHeader={
-              hasMultipleAccounts || settings.showAccountHeader
-            }
-          />
-        ))}
+        {notifications.map((accountNotification) => {
+          return (
+            <AccountNotifications
+              account={accountNotification.account}
+              error={accountNotification.error}
+              key={getAccountUUID(accountNotification.account)}
+              notifications={accountNotification.notifications}
+              showAccountHeader={
+                hasMultipleAccounts || settings.showAccountHeader
+              }
+            />
+          );
+        })}
       </Contents>
     </Page>
   );

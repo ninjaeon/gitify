@@ -1,7 +1,7 @@
 import { type FC, useCallback, useContext, useState } from 'react';
 
-import { Button, Stack, Text } from '@primer/react';
-import { Dialog } from '@primer/react/experimental';
+import { Button, Dialog, Stack, Text } from '@primer/react';
+
 import { AppContext } from '../../context/App';
 
 export const SettingsReset: FC = () => {
@@ -16,18 +16,16 @@ export const SettingsReset: FC = () => {
   return (
     <Stack align="center">
       <Button
-        variant="danger"
-        onClick={() => setIsOpen(!isOpen)}
         data-testid="settings-reset"
+        onClick={() => setIsOpen(!isOpen)}
         sx={{ width: '200px' }}
+        variant="danger"
       >
         Reset Settings
       </Button>
       {isOpen && (
         <Dialog
-          title="Reset Settings"
-          width="large"
-          onClose={onDialogClose}
+          data-testid="reset-dialog"
           footerButtons={[
             {
               buttonType: 'default',
@@ -40,7 +38,9 @@ export const SettingsReset: FC = () => {
               onClick: onDialogProceed,
             },
           ]}
-          data-testid="reset-dialog"
+          onClose={onDialogClose}
+          title="Reset Settings"
+          width="large"
         >
           Please confirm that you want to reset all settings to the{' '}
           <Text as="strong">Gitify defaults</Text>

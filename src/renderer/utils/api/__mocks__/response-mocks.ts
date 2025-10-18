@@ -45,6 +45,7 @@ export const mockNotificationUser: User = {
 export const mockGitHubNotifications: Notification[] = [
   {
     account: mockGitHubCloudAccount,
+    order: 0,
     id: '138661096',
     unread: true,
     reason: 'subscribed',
@@ -197,6 +198,7 @@ export const mockGitHubNotifications: Notification[] = [
   },
   {
     account: mockGitHubCloudAccount,
+    order: 1,
     id: '148827438',
     unread: true,
     reason: 'author',
@@ -260,6 +262,7 @@ export const mockGitHubNotifications: Notification[] = [
 export const mockEnterpriseNotifications: Notification[] = [
   {
     account: mockGitHubEnterpriseServerAccount,
+    order: 0,
     id: '3',
     unread: true,
     reason: 'subscribed',
@@ -316,6 +319,7 @@ export const mockEnterpriseNotifications: Notification[] = [
   },
   {
     account: mockGitHubEnterpriseServerAccount,
+    order: 1,
     id: '4',
     unread: true,
     reason: 'subscribed',
@@ -390,13 +394,13 @@ export const mockDiscussionComments: DiscussionComments = {
   nodes: [
     {
       databaseId: 2258799,
-      createdAt: '2022-02-27T01:22:20Z',
+      createdAt: '2017-02-20T17:51:57Z',
       author: mockDiscussionAuthor,
       replies: {
         nodes: [
           {
             databaseId: 2300902,
-            createdAt: '2022-03-05T17:43:52Z',
+            createdAt: '2017-05-20T17:51:57Z',
             author: mockDiscussionReplier,
           },
         ],

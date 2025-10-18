@@ -1,7 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { webFrame } from 'electron';
-import { MemoryRouter } from 'react-router-dom';
 
 import {
   mockAuth,
@@ -29,9 +27,7 @@ describe('renderer/components/settings/AppearanceSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <AppearanceSettings />
-          </MemoryRouter>
+          <AppearanceSettings />
         </AppContext.Provider>,
       );
     });
@@ -45,8 +41,31 @@ describe('renderer/components/settings/AppearanceSettings.tsx', () => {
     expect(updateSetting).toHaveBeenCalledWith('theme', 'LIGHT');
   });
 
+  it('should toggle increase contrast checkbox', async () => {
+    await act(async () => {
+      render(
+        <AppContext.Provider
+          value={{
+            auth: {
+              accounts: [mockGitHubAppAccount],
+            },
+            settings: mockSettings,
+            updateSetting,
+          }}
+        >
+          <AppearanceSettings />
+        </AppContext.Provider>,
+      );
+    });
+
+    await userEvent.click(screen.getByTestId('checkbox-increaseContrast'));
+
+    expect(updateSetting).toHaveBeenCalledTimes(1);
+    expect(updateSetting).toHaveBeenCalledWith('increaseContrast', true);
+  });
+
   it('should update the zoom value when using CMD + and CMD -', async () => {
-    webFrame.getZoomLevel = jest.fn().mockReturnValue(-1);
+    window.gitify.zoom.getLevel = jest.fn().mockReturnValue(-1);
 
     await act(async () => {
       render(
@@ -57,9 +76,7 @@ describe('renderer/components/settings/AppearanceSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <AppearanceSettings />
-          </MemoryRouter>
+          <AppearanceSettings />
         </AppContext.Provider>,
       );
     });
@@ -72,9 +89,9 @@ describe('renderer/components/settings/AppearanceSettings.tsx', () => {
   });
 
   it('should update the zoom values when using the zoom buttons', async () => {
-    webFrame.getZoomLevel = jest.fn().mockReturnValue(0);
-    webFrame.setZoomLevel = jest.fn().mockImplementation((level) => {
-      webFrame.getZoomLevel = jest.fn().mockReturnValue(level);
+    window.gitify.zoom.getLevel = jest.fn().mockReturnValue(0);
+    window.gitify.zoom.setLevel = jest.fn().mockImplementation((level) => {
+      window.gitify.zoom.getLevel = jest.fn().mockReturnValue(level);
       fireEvent(window, new Event('resize'));
     });
 
@@ -87,9 +104,7 @@ describe('renderer/components/settings/AppearanceSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <AppearanceSettings />
-          </MemoryRouter>
+          <AppearanceSettings />
         </AppContext.Provider>,
       );
     });
@@ -142,9 +157,7 @@ describe('renderer/components/settings/AppearanceSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <AppearanceSettings />
-          </MemoryRouter>
+          <AppearanceSettings />
         </AppContext.Provider>,
       );
     });
@@ -167,9 +180,7 @@ describe('renderer/components/settings/AppearanceSettings.tsx', () => {
             updateSetting,
           }}
         >
-          <MemoryRouter>
-            <AppearanceSettings />
-          </MemoryRouter>
+          <AppearanceSettings />
         </AppContext.Provider>,
       );
     });

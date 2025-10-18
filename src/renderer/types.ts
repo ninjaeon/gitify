@@ -1,5 +1,7 @@
-import type { OcticonProps } from '@primer/octicons-react';
 import type { FC } from 'react';
+
+import type { OcticonProps } from '@primer/octicons-react';
+
 import type {
   Notification,
   Reason,
@@ -30,7 +32,7 @@ export type Hostname = Branded<string, 'Hostname'>;
 
 export type Link = Branded<string, 'WebUrl'>;
 
-export type UserHandle = Branded<string, 'UserHandle'>;
+export type SearchToken = Branded<string, 'SearchToken'>;
 
 export type Status = 'loading' | 'success' | 'error';
 
@@ -47,25 +49,28 @@ export interface Account {
 export type SettingsValue =
   | boolean
   | number
+  | FetchType
+  | FilterValue[]
   | GroupBy
   | OpenPreference
-  | Theme
-  | FilterValue[];
+  | Theme;
 
 export type FilterValue =
-  | Reason
-  | UserType
-  | UserHandle
   | FilterStateType
-  | SubjectType;
+  | Reason
+  | SearchToken
+  | SubjectType
+  | UserType;
 
 export type SettingsState = AppearanceSettingsState &
   NotificationSettingsState &
+  TraySettingsState &
   SystemSettingsState &
   FilterSettingsState;
 
 export interface AppearanceSettingsState {
   theme: Theme;
+  increaseContrast: boolean;
   zoomPercentage: number;
   showAccountHeader: boolean;
   wrapNotificationTitle: boolean;
@@ -73,6 +78,8 @@ export interface AppearanceSettingsState {
 
 export interface NotificationSettingsState {
   groupBy: GroupBy;
+  fetchType: FetchType;
+  fetchInterval: number;
   fetchAllNotifications: boolean;
   detailedNotifications: boolean;
   showPills: boolean;
@@ -83,12 +90,16 @@ export interface NotificationSettingsState {
   delayNotificationState: boolean;
 }
 
+export interface TraySettingsState {
+  showNotificationsCountInTray: boolean;
+  useUnreadActiveIcon: boolean;
+  useAlternateIdleIcon: boolean;
+}
+
 export interface SystemSettingsState {
   openLinks: OpenPreference;
   keyboardShortcut: boolean;
-  showNotificationsCountInTray: boolean;
   showNotifications: boolean;
-  useAlternateIdleIcon: boolean;
   playSound: boolean;
   notificationVolume: number;
   openAtStartup: boolean;
@@ -96,9 +107,9 @@ export interface SystemSettingsState {
 }
 
 export interface FilterSettingsState {
+  filterIncludeSearchTokens: SearchToken[];
+  filterExcludeSearchTokens: SearchToken[];
   filterUserTypes: UserType[];
-  filterIncludeHandles: string[];
-  filterExcludeHandles: string[];
   filterSubjectTypes: SubjectType[];
   filterStates: FilterStateType[];
   filterReasons: Reason[];
@@ -112,11 +123,9 @@ export interface GitifyState {
 export enum Theme {
   SYSTEM = 'SYSTEM',
   LIGHT = 'LIGHT',
-  LIGHT_HIGH_CONTRAST = 'LIGHT_HIGH_CONTRAST',
   LIGHT_COLORBLIND = 'LIGHT_COLORBLIND',
   LIGHT_TRITANOPIA = 'LIGHT_TRITANOPIA',
   DARK = 'DARK',
-  DARK_HIGH_CONTRAST = 'DARK_HIGH_CONTRAST',
   DARK_COLORBLIND = 'DARK_COLORBLIND',
   DARK_TRITANOPIA = 'DARK_TRITANOPIA',
   DARK_DIMMED = 'DARK_DIMMED',
@@ -130,6 +139,11 @@ export enum OpenPreference {
 export enum GroupBy {
   REPOSITORY = 'REPOSITORY',
   DATE = 'DATE',
+}
+
+export enum FetchType {
+  INTERVAL = 'INTERVAL',
+  INACTIVITY = 'INACTIVITY',
 }
 
 export type RadioGroupItem = {

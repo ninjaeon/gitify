@@ -1,10 +1,9 @@
 import { format } from 'date-fns';
 import semver from 'semver';
 
-import { ipcRenderer } from 'electron';
 import { APPLICATION } from '../../../shared/constants';
-import { namespacedEvent } from '../../../shared/events';
-import { logError, logInfo, logWarn } from '../../../shared/logger';
+
+import { Constants } from '../../constants';
 import type {
   Account,
   AuthCode,
@@ -19,8 +18,8 @@ import type { UserDetails } from '../../typesGitHub';
 import { getAuthenticatedUser } from '../api/client';
 import { apiRequest } from '../api/request';
 import { encryptValue, openExternalLink } from '../comms';
-import { Constants } from '../constants';
 import { getPlatformFromHostname } from '../helpers';
+import { rendererLogError, rendererLogInfo, rendererLogWarn } from '../logger';
 import type { AuthMethod, AuthResponse, AuthTokenResponse } from './types';
 
 export function authGitHub(
@@ -64,16 +63,13 @@ export function authGitHub(
       }
     };
 
-    ipcRenderer.on(
-      namespacedEvent('auth-callback'),
-      (_, callbackUrl: string) => {
-        logInfo(
-          'renderer:auth-callback',
-          `received authentication callback URL ${callbackUrl}`,
-        );
-        handleCallback(callbackUrl);
-      },
-    );
+    window.gitify.onAuthCallback((callbackUrl: string) => {
+      rendererLogInfo(
+        'renderer:auth-callback',
+        `received authentication callback URL ${callbackUrl}`,
+      );
+      handleCallback(callbackUrl);
+    });
   });
 }
 
@@ -135,7 +131,7 @@ export async function addAccount(
   );
 
   if (accountAlreadyExists) {
-    logWarn(
+    rendererLogWarn(
       'addAccount',
       `account for user ${newAccount.user.login} already exists`,
     );
@@ -187,13 +183,13 @@ export async function refreshAccount(account: Account): Promise<Account> {
       );
 
     if (!account.hasRequiredScopes) {
-      logWarn(
+      rendererLogWarn(
         'refreshAccount',
         `account for user ${account.user.login} is missing required scopes`,
       );
     }
   } catch (err) {
-    logError(
+    rendererLogError(
       'refreshAccount',
       `failed to refresh account for user ${account.user.login}`,
       err,

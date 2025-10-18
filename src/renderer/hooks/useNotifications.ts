@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
 
-import { logError } from '../../shared/logger';
 import type {
   Account,
   AccountNotifications,
@@ -14,8 +13,9 @@ import {
   markNotificationThreadAsDone,
   markNotificationThreadAsRead,
 } from '../utils/api/client';
-import { updateTrayIcon } from '../utils/comms';
+import { updateTrayColor } from '../utils/comms';
 import { isMarkAsDoneFeatureSupported } from '../utils/features';
+import { rendererLogError } from '../utils/logger';
 import { triggerNativeNotifications } from '../utils/notifications/native';
 import {
   getAllNotifications,
@@ -93,7 +93,7 @@ export const useNotifications = (): NotificationsState => {
       if (allAccountsHaveErrors) {
         setStatus('error');
         setGlobalError(accountErrorsAreAllSame ? accountError : null);
-        updateTrayIcon(-1);
+        updateTrayColor(-1);
         return;
       }
 
@@ -128,7 +128,7 @@ export const useNotifications = (): NotificationsState => {
         setNotifications(updatedNotifications);
         setTrayIconColor(updatedNotifications);
       } catch (err) {
-        logError(
+        rendererLogError(
           'markNotificationsAsRead',
           'Error occurred while marking notifications as read',
           err,
@@ -166,7 +166,7 @@ export const useNotifications = (): NotificationsState => {
         setNotifications(updatedNotifications);
         setTrayIconColor(updatedNotifications);
       } catch (err) {
-        logError(
+        rendererLogError(
           'markNotificationsAsDone',
           'Error occurred while marking notifications as done',
           err,
@@ -195,7 +195,7 @@ export const useNotifications = (): NotificationsState => {
           await markNotificationsAsRead(state, [notification]);
         }
       } catch (err) {
-        logError(
+        rendererLogError(
           'unsubscribeNotification',
           'Error occurred while unsubscribing from notification thread',
           err,

@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+
 import type { GitifyError } from '../../types';
 import type { GitHubRESTError } from '../../typesGitHub';
 import { Errors } from '../errors';
@@ -10,6 +11,10 @@ export function determineFailureType(
 
   if (code === AxiosError.ERR_NETWORK) {
     return Errors.NETWORK;
+  }
+
+  if (err.message?.includes('safeStorage')) {
+    return Errors.BAD_CREDENTIALS;
   }
 
   if (code !== AxiosError.ERR_BAD_REQUEST) {

@@ -1,20 +1,13 @@
 import { type FC, useContext } from 'react';
 
 import { DeviceDesktopIcon, SyncIcon } from '@primer/octicons-react';
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  IconButton,
-  Stack,
-  Text,
-} from '@primer/react';
+import { Button, ButtonGroup, IconButton, Stack, Text } from '@primer/react';
 
 import { APPLICATION } from '../../../shared/constants';
-import { isLinux, isMacOS } from '../../../shared/platform';
-import { AppContext, defaultSettings } from '../../context/App';
+
+import { AppContext } from '../../context/App';
+import { defaultSettings } from '../../context/defaults';
 import { OpenPreference } from '../../types';
-import { Constants } from '../../utils/constants';
 import { Checkbox } from '../fields/Checkbox';
 import { RadioGroup } from '../fields/RadioGroup';
 import { VolumeDownIcon } from '../icons/VolumeDownIcon';
@@ -30,153 +23,144 @@ export const SystemSettings: FC = () => {
 
       <Stack direction="vertical" gap="condensed">
         <RadioGroup
-          name="openLinks"
           label="Open Links:"
-          value={settings.openLinks}
+          name="openLinks"
+          onChange={(evt) => {
+            updateSetting('openLinks', evt.target.value as OpenPreference);
+          }}
           options={[
             { label: 'Foreground', value: OpenPreference.FOREGROUND },
             { label: 'Background', value: OpenPreference.BACKGROUND },
           ]}
-          onChange={(evt) => {
-            updateSetting('openLinks', evt.target.value as OpenPreference);
-          }}
+          tooltip={
+            <Stack direction="vertical" gap="condensed">
+              <Text>
+                Controls the behavior of how external links should opened.
+              </Text>
+              <Text>
+                <Text as="strong">Foreground</Text> will open the link and bring
+                the opened window or browser to the front.
+              </Text>
+              <Text>
+                <Text as="strong">Background</Text> opens the link without
+                stealing focus from the current window.
+              </Text>
+            </Stack>
+          }
+          value={settings.openLinks}
         />
 
         <Checkbox
-          name="keyboardShortcut"
-          label="Enable keyboard shortcut"
           checked={settings.keyboardShortcut}
+          label="Enable keyboard shortcut"
+          name="keyboardShortcut"
           onChange={(evt) =>
             updateSetting('keyboardShortcut', evt.target.checked)
           }
           tooltip={
-            <Box>
+            <div>
               When enabled you can use the hotkeys{' '}
               <Text as="strong" className="text-gitify-caution">
-                {Constants.DEFAULT_KEYBOARD_SHORTCUT}
+                {APPLICATION.DEFAULT_KEYBOARD_SHORTCUT}
               </Text>{' '}
               to show or hide {APPLICATION.NAME}.
-            </Box>
+            </div>
           }
         />
 
         <Checkbox
-          name="showNotificationsCountInTray"
-          label="Show notification count in tray"
-          checked={settings.showNotificationsCountInTray}
-          visible={isMacOS()}
-          onChange={(evt) =>
-            updateSetting('showNotificationsCountInTray', evt.target.checked)
-          }
-        />
-
-        <Checkbox
-          name="showNotifications"
-          label="Show system notifications"
           checked={settings.showNotifications}
+          label="Show system notifications"
+          name="showNotifications"
           onChange={(evt) =>
             updateSetting('showNotifications', evt.target.checked)
           }
+          tooltip={
+            <Text>
+              Display native operating system notifications for new unread
+              notifications.
+            </Text>
+          }
         />
 
-        <Box>
-          <Stack
-            direction="horizontal"
-            gap="condensed"
-            align="center"
-            className="text-sm"
+        <Stack
+          align="center"
+          className="text-sm"
+          direction="horizontal"
+          gap="condensed"
+        >
+          <Checkbox
+            checked={settings.playSound}
+            label="Play sound"
+            name="playSound"
+            onChange={(evt) => updateSetting('playSound', evt.target.checked)}
+          />
+
+          <ButtonGroup
+            className="ml-2"
+            data-testid="settings-volume-group"
+            hidden={!settings.playSound}
           >
-            <Checkbox
-              name="playSound"
-              label="Play sound"
-              checked={settings.playSound}
-              onChange={(evt) => updateSetting('playSound', evt.target.checked)}
+            <IconButton
+              aria-label="Volume down"
+              data-testid="settings-volume-down"
+              icon={VolumeDownIcon}
+              onClick={() => {
+                const newVolume = Math.max(
+                  settings.notificationVolume - 10,
+                  10,
+                );
+                updateSetting('notificationVolume', newVolume);
+              }}
+              size="small"
+              unsafeDisableTooltip={true}
             />
 
-            <ButtonGroup
-              className="ml-2"
-              hidden={!settings.playSound}
-              data-testid="settings-volume-group"
-            >
-              <IconButton
-                aria-label="Volume down"
-                size="small"
-                icon={VolumeDownIcon}
-                unsafeDisableTooltip={true}
-                onClick={() => {
-                  const newVolume = Math.max(
-                    settings.notificationVolume - 10,
-                    10,
-                  );
-                  updateSetting('notificationVolume', newVolume);
-                }}
-                data-testid="settings-volume-down"
-              />
+            <Button aria-label="Volume percentage" disabled size="small">
+              {settings.notificationVolume.toFixed(0)}%
+            </Button>
 
-              <Button aria-label="Volume percentage" size="small" disabled>
-                {settings.notificationVolume.toFixed(0)}%
-              </Button>
+            <IconButton
+              aria-label="Volume up"
+              data-testid="settings-volume-up"
+              icon={VolumeUpIcon}
+              onClick={() => {
+                const newVolume = Math.min(
+                  settings.notificationVolume + 10,
+                  100,
+                );
+                updateSetting('notificationVolume', newVolume);
+              }}
+              size="small"
+              unsafeDisableTooltip={true}
+            />
 
-              <IconButton
-                aria-label="Volume up"
-                size="small"
-                icon={VolumeUpIcon}
-                unsafeDisableTooltip={true}
-                onClick={() => {
-                  const newVolume = Math.min(
-                    settings.notificationVolume + 10,
-                    100,
-                  );
-                  updateSetting('notificationVolume', newVolume);
-                }}
-                data-testid="settings-volume-up"
-              />
-
-              <IconButton
-                aria-label="Reset volume"
-                size="small"
-                variant="danger"
-                icon={SyncIcon}
-                unsafeDisableTooltip={true}
-                onClick={() => {
-                  updateSetting(
-                    'notificationVolume',
-                    defaultSettings.notificationVolume,
-                  );
-                }}
-                data-testid="settings-volume-reset"
-              />
-            </ButtonGroup>
-          </Stack>
-        </Box>
+            <IconButton
+              aria-label="Reset volume"
+              data-testid="settings-volume-reset"
+              icon={SyncIcon}
+              onClick={() => {
+                updateSetting(
+                  'notificationVolume',
+                  defaultSettings.notificationVolume,
+                );
+              }}
+              size="small"
+              unsafeDisableTooltip={true}
+              variant="danger"
+            />
+          </ButtonGroup>
+        </Stack>
 
         <Checkbox
-          name="useAlternateIdleIcon"
-          label="Use alternate idle icon"
-          checked={settings.useAlternateIdleIcon}
-          onChange={(evt) =>
-            updateSetting('useAlternateIdleIcon', evt.target.checked)
-          }
-          tooltip={
-            <Stack direction="vertical" gap="condensed">
-              <Text>
-                Use a white {APPLICATION.NAME} logo (instead of the default
-                black logo) when all notifications are read.
-              </Text>
-              <Text>
-                This is particularly useful for devices which have a dark-themed
-                menubar or taskbar.
-              </Text>
-            </Stack>
-          }
-        />
-
-        <Checkbox
-          name="openAtStartup"
-          label="Open at startup"
           checked={settings.openAtStartup}
-          visible={!isLinux()}
+          label="Open at startup"
+          name="openAtStartup"
           onChange={(evt) => updateSetting('openAtStartup', evt.target.checked)}
+          tooltip={
+            <Text>Launch {APPLICATION.NAME} automatically at startup.</Text>
+          }
+          visible={!window.gitify.platform.isLinux()}
         />
 
         <Checkbox

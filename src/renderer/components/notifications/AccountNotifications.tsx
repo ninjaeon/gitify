@@ -1,7 +1,7 @@
 import { type FC, type MouseEvent, useContext, useMemo, useState } from 'react';
 
 import { GitPullRequestIcon, IssueOpenedIcon } from '@primer/octicons-react';
-import { Box, Button, Stack } from '@primer/react';
+import { Button, Stack } from '@primer/react';
 
 import { AppContext } from '../../context/App';
 import { type Account, type GitifyError, Size } from '../../types';
@@ -13,9 +13,13 @@ import {
   openGitHubIssues,
   openGitHubPulls,
 } from '../../utils/links';
+import {
+  groupNotificationsByRepository,
+  isGroupByRepository,
+} from '../../utils/notifications/group';
 import { AllRead } from '../AllRead';
-import { Oops } from '../Oops';
 import { AvatarWithFallback } from '../avatars/AvatarWithFallback';
+import { Oops } from '../Oops';
 import { HoverButton } from '../primitives/HoverButton';
 import { HoverGroup } from '../primitives/HoverGroup';
 import { NotificationRow } from './NotificationRow';
@@ -31,24 +35,25 @@ interface IAccountNotifications {
 export const AccountNotifications: FC<IAccountNotifications> = (
   props: IAccountNotifications,
 ) => {
-  const { account, showAccountHeader, notifications } = props;
+  const { account, showAccountHeader, error, notifications } = props;
 
   const { settings } = useContext(AppContext);
 
   const [showAccountNotifications, setShowAccountNotifications] =
     useState(true);
 
-  const groupedNotifications = Object.values(
-    notifications.reduce(
-      (acc: { [key: string]: Notification[] }, notification) => {
-        const key = notification.repository.full_name;
-        if (!acc[key]) acc[key] = [];
-        acc[key].push(notification);
-        return acc;
-      },
-      {},
-    ),
+  const sortedNotifications = useMemo(
+    () => [...notifications].sort((a, b) => a.order - b.order),
+    [notifications],
   );
+
+  const groupedNotifications = useMemo(() => {
+    const map = groupNotificationsByRepository([
+      { account, error, notifications: sortedNotifications },
+    ]);
+
+    return Array.from(map.values());
+  }, [account, error, sortedNotifications]);
 
   const hasNotifications = useMemo(
     () => notifications.length > 0,
@@ -65,76 +70,68 @@ export const AccountNotifications: FC<IAccountNotifications> = (
     'account',
   );
 
-  const isGroupByRepository = settings.groupBy === 'REPOSITORY';
-
   return (
     <>
       {showAccountHeader && (
-        <Box
+        <Stack
           className={cn(
-            'group pr-1 py-0.5',
+            'group relative pr-1 py-0.5',
             props.error ? 'bg-gitify-account-error' : 'bg-gitify-account-rest',
           )}
+          direction="horizontal"
           onClick={actionToggleAccountNotifications}
         >
-          <Stack
-            direction="horizontal"
-            align="center"
-            gap="condensed"
-            className="relative"
+          <Button
+            alignContent="center"
+            count={notifications.length}
+            data-testid="account-profile"
+            onClick={(event: MouseEvent<HTMLElement>) => {
+              // Don't trigger onClick of parent element.
+              event.stopPropagation();
+              openAccountProfile(account);
+            }}
+            title="Open account profile"
+            variant="invisible"
           >
-            <Button
-              title="Open account profile"
-              variant="invisible"
-              alignContent="center"
-              count={notifications.length}
-              onClick={(event: MouseEvent<HTMLElement>) => {
-                // Don't trigger onClick of parent element.
-                event.stopPropagation();
-                openAccountProfile(account);
-              }}
-              data-testid="account-profile"
-            >
-              <AvatarWithFallback
-                src={account.user.avatar}
-                alt={account.user.login}
-                name={`@${account.user.login}`}
-                size={Size.MEDIUM}
-              />
-            </Button>
+            <AvatarWithFallback
+              alt={account.user.login}
+              name={`@${account.user.login}`}
+              size={Size.MEDIUM}
+              src={account.user.avatar}
+            />
+          </Button>
 
-            <HoverGroup bgColor="group-hover:bg-gitify-account-rest">
-              <HoverButton
-                label="My Issues"
-                icon={IssueOpenedIcon}
-                testid="account-issues"
-                action={() => openGitHubIssues(account.hostname)}
-              />
+          <HoverGroup bgColor="group-hover:bg-gitify-account-rest">
+            <HoverButton
+              action={() => openGitHubIssues(account.hostname)}
+              icon={IssueOpenedIcon}
+              label="My issues ↗"
+              testid="account-issues"
+            />
 
-              <HoverButton
-                label="My Pull Requests"
-                icon={GitPullRequestIcon}
-                testid="account-pull-requests"
-                action={() => openGitHubPulls(account.hostname)}
-              />
+            <HoverButton
+              action={() => openGitHubPulls(account.hostname)}
+              icon={GitPullRequestIcon}
+              label="My pull requests ↗"
+              testid="account-pull-requests"
+            />
 
-              <HoverButton
-                label={Chevron.label}
-                icon={Chevron.icon}
-                testid="account-toggle"
-                action={actionToggleAccountNotifications}
-              />
-            </HoverGroup>
-          </Stack>
-        </Box>
+            <HoverButton
+              action={actionToggleAccountNotifications}
+              icon={Chevron.icon}
+              label={Chevron.label}
+              testid="account-toggle"
+            />
+          </HoverGroup>
+        </Stack>
       )}
 
       {showAccountNotifications && (
         <>
           {props.error && <Oops error={props.error} fullHeight={false} />}
           {!hasNotifications && !props.error && <AllRead fullHeight={false} />}
-          {isGroupByRepository
-            ? Object.values(groupedNotifications).map((repoNotifications) => {
+          {isGroupByRepository(settings)
+            ? groupedNotifications.map((repoNotifications) => {
                 const repoSlug = repoNotifications[0].repository.full_name;
 
                 return (
@@ -145,7 +142,7 @@ export const AccountNotifications: FC<IAccountNotifications> = (
                   />
                 );
               })
-            : notifications.map((notification) => (
+            : sortedNotifications.map((notification) => (
                 <NotificationRow
                   key={notification.id}
                   notification={notification}

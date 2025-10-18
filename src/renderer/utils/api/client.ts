@@ -1,7 +1,6 @@
 import type { AxiosPromise } from 'axios';
 import { print } from 'graphql/language/printer';
 
-import { logError } from '../../../shared/logger';
 import type {
   Account,
   Hostname,
@@ -24,6 +23,7 @@ import type {
   UserDetails,
 } from '../../typesGitHub';
 import { isAnsweredDiscussionFeatureSupported } from '../features';
+import { rendererLogError } from '../logger';
 import { QUERY_SEARCH_DISCUSSIONS } from './graphql/discussions';
 import { formatAsGitHubSearchSyntax } from './graphql/utils';
 import { apiRequestAuth } from './request';
@@ -116,7 +116,7 @@ export function markNotificationThreadAsDone(
 }
 
 /**
- * Ignore future notifications for threads until you comment on the thread or get an`@mention`.
+ * Ignore future notifications for threads until you comment on the thread or get a `@mention`.
  *
  * Endpoint documentation: https://docs.github.com/en/rest/activity/notifications#delete-a-thread-subscription
  */
@@ -218,7 +218,7 @@ export async function getHtmlUrl(url: Link, token: Token): Promise<string> {
     const response = (await apiRequestAuth(url, 'GET', token)).data;
     return response.html_url;
   } catch (err) {
-    logError(
+    rendererLogError(
       'getHtmlUrl',
       `error occurred while fetching html url for ${url}`,
       err,
@@ -248,8 +248,9 @@ export async function searchDiscussions(
           notification.subject.title,
         ),
         firstDiscussions: 1,
-        lastComments: 1,
-        lastReplies: 1,
+        lastComments: 100,
+        lastReplies: 100,
+        firstLabels: 100,
         includeIsAnswered: isAnsweredDiscussionFeatureSupported(
           notification.account,
         ),
@@ -267,12 +268,12 @@ export async function getLatestDiscussion(
   try {
     const response = await searchDiscussions(notification);
     return (
-      response.data?.data.search.nodes.filter(
+      response.data?.data.search.nodes.find(
         (discussion) => discussion.title === notification.subject.title,
-      )[0] ?? null
+      ) ?? null
     );
   } catch (err) {
-    logError(
+    rendererLogError(
       'getLatestDiscussion',
       'failed to fetch latest discussion for notification',
       err,

@@ -1,15 +1,16 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`renderer/components/Sidebar.tsx notifications icon renders correct icon when there are no notifications 1`] = `
 <button
-  aria-describedby="«r1f»-loading-announcement «r1e»"
+  aria-describedby="_r_1f_-loading-announcement _r_1e_"
   aria-label="Notifications"
-  class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+  class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
   data-component="IconButton"
   data-loading="false"
   data-no-visuals="true"
   data-size="small"
   data-testid="sidebar-notifications"
+  data-variant="invisible"
   sx="[object Object]"
   type="button"
 >
@@ -34,14 +35,15 @@ exports[`renderer/components/Sidebar.tsx notifications icon renders correct icon
 
 exports[`renderer/components/Sidebar.tsx notifications icon renders correct icon when there are notifications 1`] = `
 <button
-  aria-describedby="«r1t»-loading-announcement «r1s»"
+  aria-describedby="_r_1t_-loading-announcement _r_1s_"
   aria-label="Notifications"
-  class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+  class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
   data-component="IconButton"
   data-loading="false"
   data-no-visuals="true"
   data-size="small"
   data-testid="sidebar-notifications"
+  data-variant="invisible"
   sx="[object Object]"
   type="button"
 >
@@ -70,7 +72,7 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
   "baseElement": <body>
     <div>
       <div
-        class="Stack__StyledStack-sc-x3xa2i-0 oXGHI fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white"
+        class="fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white prc-Stack-Stack-WJVsK"
         data-align="stretch"
         data-direction="vertical"
         data-justify="space-between"
@@ -78,7 +80,7 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         data-wrap="nowrap"
       >
         <div
-          class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+          class="prc-Stack-Stack-WJVsK"
           data-align="center"
           data-direction="vertical"
           data-gap="condensed"
@@ -87,21 +89,21 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           data-wrap="nowrap"
         >
           <button
-            aria-describedby="«r1»-loading-announcement «r0»"
+            aria-describedby="_r_1_-loading-announcement _r_0_"
             aria-label="Gitify"
-            class="types__StyledButton-sc-ws60qy-0 gbYXLg"
+            class="prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-home"
-            sx="[object Object]"
+            data-variant="invisible"
             type="button"
           >
             <svg
+              aria-hidden="true"
               aria-label="Gitify Logo"
-              class="size-5"
-              role="img"
+              class="size-2.5"
               viewBox="0 0 500 500"
               xmlns="https://www.w3.org/2000/svg"
               xmlns:xlink="https://www.w3.org/1999/xlink"
@@ -144,23 +146,25 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
             </svg>
           </button>
           <span
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            aria-hidden="true"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«r0»"
+            id="_r_0_"
             popover="auto"
             role="tooltip"
           >
             Home
           </span>
           <button
-            aria-describedby="«r3»-loading-announcement «r2»"
+            aria-describedby="_r_3_-loading-announcement _r_2_"
             aria-label="Notifications"
-            class="types__StyledButton-sc-ws60qy-0 faMCqe"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-notifications"
+            data-variant="primary"
             sx="[object Object]"
             type="button"
           >
@@ -182,23 +186,25 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
             </svg>
           </button>
           <span
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            aria-hidden="true"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«r2»"
+            id="_r_2_"
             popover="auto"
             role="tooltip"
           >
-            4 unread notifications
+            4 unread notifications ↗
           </span>
           <button
-            aria-describedby="«r5»-loading-announcement"
-            aria-labelledby="«r4»"
-            class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+            aria-describedby="_r_5_-loading-announcement"
+            aria-labelledby="_r_4_"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-my-issues"
+            data-variant="invisible"
             sx="[object Object]"
             type="button"
           >
@@ -224,22 +230,23 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           </button>
           <span
             aria-hidden="true"
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«r4»"
+            id="_r_4_"
             popover="auto"
           >
-            My issues
+            My issues ↗
           </span>
           <button
-            aria-describedby="«r7»-loading-announcement"
-            aria-labelledby="«r6»"
-            class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+            aria-describedby="_r_7_-loading-announcement"
+            aria-labelledby="_r_6_"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-my-pull-requests"
+            data-variant="invisible"
             sx="[object Object]"
             type="button"
           >
@@ -262,16 +269,16 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           </button>
           <span
             aria-hidden="true"
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«r6»"
+            id="_r_6_"
             popover="auto"
           >
-            My pull requests
+            My pull requests ↗
           </span>
         </div>
         <div
-          class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+          class="prc-Stack-Stack-WJVsK"
           data-align="center"
           data-direction="vertical"
           data-gap="condensed"
@@ -280,14 +287,15 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           data-wrap="nowrap"
         >
           <button
-            aria-describedby="«r9»-loading-announcement"
-            aria-labelledby="«r8»"
-            class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+            aria-describedby="_r_9_-loading-announcement"
+            aria-labelledby="_r_8_"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-quit"
+            data-variant="invisible"
             sx="[object Object]"
             type="button"
           >
@@ -310,9 +318,9 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           </button>
           <span
             aria-hidden="true"
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«r8»"
+            id="_r_8_"
             popover="auto"
           >
             Quit Gitify
@@ -323,7 +331,7 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
   </body>,
   "container": <div>
     <div
-      class="Stack__StyledStack-sc-x3xa2i-0 oXGHI fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white"
+      class="fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white prc-Stack-Stack-WJVsK"
       data-align="stretch"
       data-direction="vertical"
       data-justify="space-between"
@@ -331,7 +339,7 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
       data-wrap="nowrap"
     >
       <div
-        class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+        class="prc-Stack-Stack-WJVsK"
         data-align="center"
         data-direction="vertical"
         data-gap="condensed"
@@ -340,21 +348,21 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         data-wrap="nowrap"
       >
         <button
-          aria-describedby="«r1»-loading-announcement «r0»"
+          aria-describedby="_r_1_-loading-announcement _r_0_"
           aria-label="Gitify"
-          class="types__StyledButton-sc-ws60qy-0 gbYXLg"
+          class="prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
           data-component="IconButton"
           data-loading="false"
           data-no-visuals="true"
           data-size="small"
           data-testid="sidebar-home"
-          sx="[object Object]"
+          data-variant="invisible"
           type="button"
         >
           <svg
+            aria-hidden="true"
             aria-label="Gitify Logo"
-            class="size-5"
-            role="img"
+            class="size-2.5"
             viewBox="0 0 500 500"
             xmlns="https://www.w3.org/2000/svg"
             xmlns:xlink="https://www.w3.org/1999/xlink"
@@ -397,23 +405,25 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           </svg>
         </button>
         <span
-          class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+          aria-hidden="true"
+          class="prc-TooltipV2-Tooltip-cYMVY"
           data-direction="e"
-          id="«r0»"
+          id="_r_0_"
           popover="auto"
           role="tooltip"
         >
           Home
         </span>
         <button
-          aria-describedby="«r3»-loading-announcement «r2»"
+          aria-describedby="_r_3_-loading-announcement _r_2_"
           aria-label="Notifications"
-          class="types__StyledButton-sc-ws60qy-0 faMCqe"
+          class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
           data-component="IconButton"
           data-loading="false"
           data-no-visuals="true"
           data-size="small"
           data-testid="sidebar-notifications"
+          data-variant="primary"
           sx="[object Object]"
           type="button"
         >
@@ -435,23 +445,25 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           </svg>
         </button>
         <span
-          class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+          aria-hidden="true"
+          class="prc-TooltipV2-Tooltip-cYMVY"
           data-direction="e"
-          id="«r2»"
+          id="_r_2_"
           popover="auto"
           role="tooltip"
         >
-          4 unread notifications
+          4 unread notifications ↗
         </span>
         <button
-          aria-describedby="«r5»-loading-announcement"
-          aria-labelledby="«r4»"
-          class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+          aria-describedby="_r_5_-loading-announcement"
+          aria-labelledby="_r_4_"
+          class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
           data-component="IconButton"
           data-loading="false"
           data-no-visuals="true"
           data-size="small"
           data-testid="sidebar-my-issues"
+          data-variant="invisible"
           sx="[object Object]"
           type="button"
         >
@@ -477,22 +489,23 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         </button>
         <span
           aria-hidden="true"
-          class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+          class="prc-TooltipV2-Tooltip-cYMVY"
           data-direction="e"
-          id="«r4»"
+          id="_r_4_"
           popover="auto"
         >
-          My issues
+          My issues ↗
         </span>
         <button
-          aria-describedby="«r7»-loading-announcement"
-          aria-labelledby="«r6»"
-          class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+          aria-describedby="_r_7_-loading-announcement"
+          aria-labelledby="_r_6_"
+          class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
           data-component="IconButton"
           data-loading="false"
           data-no-visuals="true"
           data-size="small"
           data-testid="sidebar-my-pull-requests"
+          data-variant="invisible"
           sx="[object Object]"
           type="button"
         >
@@ -515,16 +528,16 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         </button>
         <span
           aria-hidden="true"
-          class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+          class="prc-TooltipV2-Tooltip-cYMVY"
           data-direction="e"
-          id="«r6»"
+          id="_r_6_"
           popover="auto"
         >
-          My pull requests
+          My pull requests ↗
         </span>
       </div>
       <div
-        class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+        class="prc-Stack-Stack-WJVsK"
         data-align="center"
         data-direction="vertical"
         data-gap="condensed"
@@ -533,14 +546,15 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         data-wrap="nowrap"
       >
         <button
-          aria-describedby="«r9»-loading-announcement"
-          aria-labelledby="«r8»"
-          class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+          aria-describedby="_r_9_-loading-announcement"
+          aria-labelledby="_r_8_"
+          class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
           data-component="IconButton"
           data-loading="false"
           data-no-visuals="true"
           data-size="small"
           data-testid="sidebar-quit"
+          data-variant="invisible"
           sx="[object Object]"
           type="button"
         >
@@ -563,9 +577,9 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         </button>
         <span
           aria-hidden="true"
-          class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+          class="prc-TooltipV2-Tooltip-cYMVY"
           data-direction="e"
-          id="«r8»"
+          id="_r_8_"
           popover="auto"
         >
           Quit Gitify
@@ -633,7 +647,7 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
   "baseElement": <body>
     <div>
       <div
-        class="Stack__StyledStack-sc-x3xa2i-0 oXGHI fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white"
+        class="fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white prc-Stack-Stack-WJVsK"
         data-align="stretch"
         data-direction="vertical"
         data-justify="space-between"
@@ -641,7 +655,7 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         data-wrap="nowrap"
       >
         <div
-          class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+          class="prc-Stack-Stack-WJVsK"
           data-align="center"
           data-direction="vertical"
           data-gap="condensed"
@@ -650,21 +664,21 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           data-wrap="nowrap"
         >
           <button
-            aria-describedby="«rb»-loading-announcement «ra»"
+            aria-describedby="_r_b_-loading-announcement _r_a_"
             aria-label="Gitify"
-            class="types__StyledButton-sc-ws60qy-0 gbYXLg"
+            class="prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-home"
-            sx="[object Object]"
+            data-variant="invisible"
             type="button"
           >
             <svg
+              aria-hidden="true"
               aria-label="Gitify Logo"
-              class="size-5"
-              role="img"
+              class="size-2.5"
               viewBox="0 0 500 500"
               xmlns="https://www.w3.org/2000/svg"
               xmlns:xlink="https://www.w3.org/1999/xlink"
@@ -707,23 +721,25 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
             </svg>
           </button>
           <span
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            aria-hidden="true"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«ra»"
+            id="_r_a_"
             popover="auto"
             role="tooltip"
           >
             Home
           </span>
           <button
-            aria-describedby="«rd»-loading-announcement «rc»"
+            aria-describedby="_r_d_-loading-announcement _r_c_"
             aria-label="Notifications"
-            class="types__StyledButton-sc-ws60qy-0 faMCqe"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-notifications"
+            data-variant="primary"
             sx="[object Object]"
             type="button"
           >
@@ -745,23 +761,25 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
             </svg>
           </button>
           <span
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            aria-hidden="true"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«rc»"
+            id="_r_c_"
             popover="auto"
             role="tooltip"
           >
-            4 unread notifications
+            4 unread notifications ↗
           </span>
           <button
-            aria-describedby="«rf»-loading-announcement"
-            aria-labelledby="«re»"
-            class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+            aria-describedby="_r_f_-loading-announcement"
+            aria-labelledby="_r_e_"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-my-issues"
+            data-variant="invisible"
             sx="[object Object]"
             type="button"
           >
@@ -787,22 +805,23 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           </button>
           <span
             aria-hidden="true"
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«re»"
+            id="_r_e_"
             popover="auto"
           >
-            My issues
+            My issues ↗
           </span>
           <button
-            aria-describedby="«rh»-loading-announcement"
-            aria-labelledby="«rg»"
-            class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+            aria-describedby="_r_h_-loading-announcement"
+            aria-labelledby="_r_g_"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-my-pull-requests"
+            data-variant="invisible"
             sx="[object Object]"
             type="button"
           >
@@ -825,16 +844,16 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           </button>
           <span
             aria-hidden="true"
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«rg»"
+            id="_r_g_"
             popover="auto"
           >
-            My pull requests
+            My pull requests ↗
           </span>
         </div>
         <div
-          class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+          class="prc-Stack-Stack-WJVsK"
           data-align="center"
           data-direction="vertical"
           data-gap="condensed"
@@ -843,14 +862,15 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           data-wrap="nowrap"
         >
           <button
-            aria-describedby="«rj»-loading-announcement"
-            aria-labelledby="«ri»"
-            class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+            aria-describedby="_r_j_-loading-announcement"
+            aria-labelledby="_r_i_"
+            class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
             data-component="IconButton"
             data-loading="false"
             data-no-visuals="true"
             data-size="small"
             data-testid="sidebar-quit"
+            data-variant="invisible"
             sx="[object Object]"
             type="button"
           >
@@ -873,9 +893,9 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           </button>
           <span
             aria-hidden="true"
-            class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+            class="prc-TooltipV2-Tooltip-cYMVY"
             data-direction="e"
-            id="«ri»"
+            id="_r_i_"
             popover="auto"
           >
             Quit Gitify
@@ -886,7 +906,7 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
   </body>,
   "container": <div>
     <div
-      class="Stack__StyledStack-sc-x3xa2i-0 oXGHI fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white"
+      class="fixed left-sidebar -ml-sidebar w-sidebar h-full bg-gitify-sidebar text-white prc-Stack-Stack-WJVsK"
       data-align="stretch"
       data-direction="vertical"
       data-justify="space-between"
@@ -894,7 +914,7 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
       data-wrap="nowrap"
     >
       <div
-        class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+        class="prc-Stack-Stack-WJVsK"
         data-align="center"
         data-direction="vertical"
         data-gap="condensed"
@@ -903,21 +923,21 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         data-wrap="nowrap"
       >
         <button
-          aria-describedby="«rb»-loading-announcement «ra»"
+          aria-describedby="_r_b_-loading-announcement _r_a_"
           aria-label="Gitify"
-          class="types__StyledButton-sc-ws60qy-0 gbYXLg"
+          class="prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
           data-component="IconButton"
           data-loading="false"
           data-no-visuals="true"
           data-size="small"
           data-testid="sidebar-home"
-          sx="[object Object]"
+          data-variant="invisible"
           type="button"
         >
           <svg
+            aria-hidden="true"
             aria-label="Gitify Logo"
-            class="size-5"
-            role="img"
+            class="size-2.5"
             viewBox="0 0 500 500"
             xmlns="https://www.w3.org/2000/svg"
             xmlns:xlink="https://www.w3.org/1999/xlink"
@@ -960,23 +980,25 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           </svg>
         </button>
         <span
-          class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+          aria-hidden="true"
+          class="prc-TooltipV2-Tooltip-cYMVY"
           data-direction="e"
-          id="«ra»"
+          id="_r_a_"
           popover="auto"
           role="tooltip"
         >
           Home
         </span>
         <button
-          aria-describedby="«rd»-loading-announcement «rc»"
+          aria-describedby="_r_d_-loading-announcement _r_c_"
           aria-label="Notifications"
-          class="types__StyledButton-sc-ws60qy-0 faMCqe"
+          class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
           data-component="IconButton"
           data-loading="false"
           data-no-visuals="true"
           data-size="small"
           data-testid="sidebar-notifications"
+          data-variant="primary"
           sx="[object Object]"
           type="button"
         >
@@ -998,23 +1020,25 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
           </svg>
         </button>
         <span
-          class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+          aria-hidden="true"
+          class="prc-TooltipV2-Tooltip-cYMVY"
           data-direction="e"
-          id="«rc»"
+          id="_r_c_"
           popover="auto"
           role="tooltip"
         >
-          4 unread notifications
+          4 unread notifications ↗
         </span>
         <button
-          aria-describedby="«rf»-loading-announcement"
-          aria-labelledby="«re»"
-          class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+          aria-describedby="_r_f_-loading-announcement"
+          aria-labelledby="_r_e_"
+          class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
           data-component="IconButton"
           data-loading="false"
           data-no-visuals="true"
           data-size="small"
           data-testid="sidebar-my-issues"
+          data-variant="invisible"
           sx="[object Object]"
           type="button"
         >
@@ -1040,22 +1064,23 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         </button>
         <span
           aria-hidden="true"
-          class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+          class="prc-TooltipV2-Tooltip-cYMVY"
           data-direction="e"
-          id="«re»"
+          id="_r_e_"
           popover="auto"
         >
-          My issues
+          My issues ↗
         </span>
         <button
-          aria-describedby="«rh»-loading-announcement"
-          aria-labelledby="«rg»"
-          class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+          aria-describedby="_r_h_-loading-announcement"
+          aria-labelledby="_r_g_"
+          class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
           data-component="IconButton"
           data-loading="false"
           data-no-visuals="true"
           data-size="small"
           data-testid="sidebar-my-pull-requests"
+          data-variant="invisible"
           sx="[object Object]"
           type="button"
         >
@@ -1078,16 +1103,16 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         </button>
         <span
           aria-hidden="true"
-          class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+          class="prc-TooltipV2-Tooltip-cYMVY"
           data-direction="e"
-          id="«rg»"
+          id="_r_g_"
           popover="auto"
         >
-          My pull requests
+          My pull requests ↗
         </span>
       </div>
       <div
-        class="Stack__StyledStack-sc-x3xa2i-0 oXGHI"
+        class="prc-Stack-Stack-WJVsK"
         data-align="center"
         data-direction="vertical"
         data-gap="condensed"
@@ -1096,14 +1121,15 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         data-wrap="nowrap"
       >
         <button
-          aria-describedby="«rj»-loading-announcement"
-          aria-labelledby="«ri»"
-          class="types__StyledButton-sc-ws60qy-0 hVcPdH"
+          aria-describedby="_r_j_-loading-announcement"
+          aria-labelledby="_r_i_"
+          class="Box-sc-g0xbh4-0 eIPRae prc-Button-ButtonBase-c50BI prc-Button-IconButton-szpyj"
           data-component="IconButton"
           data-loading="false"
           data-no-visuals="true"
           data-size="small"
           data-testid="sidebar-quit"
+          data-variant="invisible"
           sx="[object Object]"
           type="button"
         >
@@ -1126,9 +1152,9 @@ exports[`renderer/components/Sidebar.tsx should render itself & its children (lo
         </button>
         <span
           aria-hidden="true"
-          class="Tooltip__StyledTooltip-sc-e45c7z-0 jQmzND"
+          class="prc-TooltipV2-Tooltip-cYMVY"
           data-direction="e"
-          id="«ri»"
+          id="_r_i_"
           popover="auto"
         >
           Quit Gitify

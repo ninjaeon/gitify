@@ -1,18 +1,40 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "organizeImports": {
-    "enabled": true
+  "$schema": "https://biomejs.dev/schemas/2.2.6/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ":NODE:",
+              ":BLANK_LINE:",
+              ["react*", "@testing-library/**"],
+              ":BLANK_LINE:",
+              ["*electron*", "menubar"],
+              ":BLANK_LINE:",
+              "@primer/**",
+              ":BLANK_LINE:",
+              ":PACKAGE:",
+              ":BLANK_LINE:",
+              "**/shared/**",
+              ":BLANK_LINE:",
+              "**"
+            ]
+          }
+        },
+        "useSortedAttributes": "on"
+      }
+    }
   },
   "linter": {
     "enabled": true,
+    "domains": {
+      "react": "recommended",
+      "test": "recommended"
+    },
     "rules": {
       "recommended": true,
-      "suspicious": {
-        "noConsoleLog": "error"
-      },
-      "style": {
-        "useDefaultSwitchClause": "error"
-      },
       "a11y": {
         "useKeyWithClickEvents": "off",
         "useSemanticElements": "off"
@@ -22,9 +44,33 @@
         "useExhaustiveDependencies": {
           "level": "warn",
           "options": {
-            "hooks": [{ "name": "useNavigate", "stableResult": true }]
+            "hooks": [
+              {
+                "name": "useNavigate",
+                "stableResult": true
+              }
+            ]
           }
-        }
+        },
+        "useUniqueElementIds": "warn"
+      },
+      "style": {
+        "useDefaultSwitchClause": "error",
+        "noParameterAssign": "error",
+        "useAsConstAssertion": "error",
+        "useBlockStatements": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "noUnusedTemplateLiteral": "error",
+        "useNumberNamespace": "error",
+        "noInferrableTypes": "error",
+        "noUselessElse": "error"
+      },
+      "suspicious": {
+        "noConsole": "error",
+        "noUnknownAtRules": "warn"
       }
     }
   },

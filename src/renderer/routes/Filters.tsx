@@ -4,9 +4,9 @@ import { FilterIcon, FilterRemoveIcon } from '@primer/octicons-react';
 import { Button, Stack, Tooltip } from '@primer/react';
 
 import { ReasonFilter } from '../components/filters/ReasonFilter';
+import { SearchFilter } from '../components/filters/SearchFilter';
 import { StateFilter } from '../components/filters/StateFilter';
 import { SubjectTypeFilter } from '../components/filters/SubjectTypeFilter';
-import { UserHandleFilter } from '../components/filters/UserHandleFilter';
 import { UserTypeFilter } from '../components/filters/UserTypeFilter';
 import { Contents } from '../components/layout/Contents';
 import { Page } from '../components/layout/Page';
@@ -18,15 +18,15 @@ export const FiltersRoute: FC = () => {
   const { clearFilters } = useContext(AppContext);
 
   return (
-    <Page id="filters">
+    <Page testId="filters">
       <Header fetchOnBack icon={FilterIcon}>
         Filters
       </Header>
 
       <Contents paddingBottom>
         <Stack direction="vertical" gap="spacious">
+          <SearchFilter />
           <UserTypeFilter />
-          <UserHandleFilter />
           <SubjectTypeFilter />
           <StateFilter />
           <ReasonFilter />
@@ -34,11 +34,11 @@ export const FiltersRoute: FC = () => {
       </Contents>
 
       <Footer justify="end">
-        <Tooltip text="Clear all filters" direction="n">
+        <Tooltip direction="n" text="Clear all filters">
           <Button
+            data-testid="filters-clear"
             leadingVisual={FilterRemoveIcon}
             onClick={clearFilters}
-            data-testid="filters-clear"
           >
             Clear filters
           </Button>

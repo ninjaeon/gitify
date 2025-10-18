@@ -1,26 +1,47 @@
-import { type FC, type MouseEvent, useContext } from 'react';
+import {
+  type FC,
+  type MouseEvent,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import {
   BellIcon,
   CheckIcon,
   CommentIcon,
+  DashIcon,
   GitPullRequestIcon,
-  IssueClosedIcon,
+  IssueOpenedIcon,
   MilestoneIcon,
+  PlusIcon,
+  SyncIcon,
   TagIcon,
 } from '@primer/octicons-react';
-import { Box, Stack, Text } from '@primer/react';
+import { Button, ButtonGroup, IconButton, Stack, Text } from '@primer/react';
+
+import { formatDuration, millisecondsToMinutes } from 'date-fns';
 
 import { APPLICATION } from '../../../shared/constants';
+
+import { Constants } from '../../constants';
 import { AppContext } from '../../context/App';
-import { GroupBy, Size } from '../../types';
+import { FetchType, GroupBy, Size } from '../../types';
 import { openGitHubParticipatingDocs } from '../../utils/links';
 import { Checkbox } from '../fields/Checkbox';
+import { FieldLabel } from '../fields/FieldLabel';
 import { RadioGroup } from '../fields/RadioGroup';
 import { Title } from '../primitives/Title';
 
 export const NotificationSettings: FC = () => {
   const { settings, updateSetting } = useContext(AppContext);
+  const [fetchInterval, setFetchInterval] = useState<number>(
+    settings.fetchInterval,
+  );
+
+  useEffect(() => {
+    setFetchInterval(settings.fetchInterval);
+  }, [settings.fetchInterval]);
 
   return (
     <fieldset>
@@ -28,22 +49,137 @@ export const NotificationSettings: FC = () => {
 
       <Stack direction="vertical" gap="condensed">
         <RadioGroup
-          name="groupBy"
           label="Group by:"
-          value={settings.groupBy}
+          name="groupBy"
+          onChange={(evt) => {
+            updateSetting('groupBy', evt.target.value as GroupBy);
+          }}
           options={[
             { label: 'Repository', value: GroupBy.REPOSITORY },
             { label: 'Date', value: GroupBy.DATE },
           ]}
-          onChange={(evt) => {
-            updateSetting('groupBy', evt.target.value as GroupBy);
-          }}
+          tooltip={
+            <Stack direction="vertical" gap="condensed">
+              <Text>Choose how notifications are displayed in the list.</Text>
+              <Text>
+                <Text as="strong">Repository</Text> groups notifications by
+                their repository full name.
+              </Text>
+              <Text>
+                <Text as="strong">Date</Text> shows notifications in
+                chronological order.
+              </Text>
+            </Stack>
+          }
+          value={settings.groupBy}
         />
 
+        <RadioGroup
+          label="Fetch type:"
+          name="fetchType"
+          onChange={(evt) => {
+            updateSetting('fetchType', evt.target.value as FetchType);
+          }}
+          options={[
+            { label: 'Interval', value: FetchType.INTERVAL },
+            { label: 'Inactivity', value: FetchType.INACTIVITY },
+          ]}
+          tooltip={
+            <Stack direction="vertical" gap="condensed">
+              <Text>Controls how new notifications are fetched.</Text>
+              <Text>
+                <Text as="strong">Interval</Text> will check for new
+                notifications on a regular scheduled interval.
+              </Text>
+              <Text>
+                <Text as="strong">Inactivity</Text> will check for new
+                notifications only when there has been no user activity within{' '}
+                {APPLICATION.NAME} for a specified period of time.
+              </Text>
+            </Stack>
+          }
+          value={settings.fetchType}
+        />
+
+        <Stack
+          align="center"
+          className="text-sm"
+          direction="horizontal"
+          gap="condensed"
+        >
+          <FieldLabel label="Fetch interval:" name="fetchInterval" />
+
+          <ButtonGroup className="ml-2">
+            <IconButton
+              aria-label="Decrease fetch interval"
+              data-testid="settings-fetch-interval-decrease"
+              icon={DashIcon}
+              onClick={() => {
+                const newInterval = Math.max(
+                  fetchInterval -
+                    Constants.FETCH_NOTIFICATIONS_INTERVAL_STEP_MS,
+                  Constants.MIN_FETCH_NOTIFICATIONS_INTERVAL_MS,
+                );
+
+                if (newInterval !== fetchInterval) {
+                  setFetchInterval(newInterval);
+                  updateSetting('fetchInterval', newInterval);
+                }
+              }}
+              size="small"
+              unsafeDisableTooltip={true}
+            />
+
+            <Button aria-label="Fetch interval" disabled size="small">
+              {formatDuration({
+                minutes: millisecondsToMinutes(fetchInterval),
+              })}
+            </Button>
+
+            <IconButton
+              aria-label="Increase fetch interval"
+              data-testid="settings-fetch-interval-increase"
+              icon={PlusIcon}
+              onClick={() => {
+                const newInterval = Math.min(
+                  fetchInterval +
+                    Constants.FETCH_NOTIFICATIONS_INTERVAL_STEP_MS,
+                  Constants.MAX_FETCH_NOTIFICATIONS_INTERVAL_MS,
+                );
+
+                if (newInterval !== fetchInterval) {
+                  setFetchInterval(newInterval);
+                  updateSetting('fetchInterval', newInterval);
+                }
+              }}
+              size="small"
+              unsafeDisableTooltip={true}
+            />
+
+            <IconButton
+              aria-label="Reset fetch interval"
+              data-testid="settings-fetch-interval-reset"
+              icon={SyncIcon}
+              onClick={() => {
+                setFetchInterval(
+                  Constants.DEFAULT_FETCH_NOTIFICATIONS_INTERVAL_MS,
+                );
+                updateSetting(
+                  'fetchInterval',
+                  Constants.DEFAULT_FETCH_NOTIFICATIONS_INTERVAL_MS,
+                );
+              }}
+              size="small"
+              unsafeDisableTooltip={true}
+              variant="danger"
+            />
+          </ButtonGroup>
+        </Stack>
+
         <Checkbox
-          name="fetchAllNotifications"
-          label="Fetch all notifications"
           checked={settings.fetchAllNotifications}
+          label="Fetch all notifications"
+          name="fetchAllNotifications"
           onChange={(evt) =>
             updateSetting('fetchAllNotifications', evt.target.checked)
           }
@@ -63,9 +199,9 @@ export const NotificationSettings: FC = () => {
         />
 
         <Checkbox
-          name="detailedNotifications"
-          label="Fetch detailed notifications"
           checked={settings.detailedNotifications}
+          label="Fetch detailed notifications"
+          name="detailedNotifications"
           onChange={(evt) =>
             updateSetting('detailedNotifications', evt.target.checked)
           }
@@ -91,20 +227,20 @@ export const NotificationSettings: FC = () => {
           }
         />
 
-        <Box className="pl-6" hidden={!settings.detailedNotifications}>
+        <div className="pl-6" hidden={!settings.detailedNotifications}>
           <Stack direction="vertical" gap="condensed">
             <Checkbox
-              name="showPills"
-              label="Show notification metric pills"
               checked={settings.showPills}
+              label="Show notification metric pills"
+              name="showPills"
               onChange={(evt) => updateSetting('showPills', evt.target.checked)}
               tooltip={
                 <Stack direction="vertical" gap="condensed">
                   <Text>Show notification metric pills for:</Text>
-                  <Box className="pl-4">
+                  <div className="pl-2">
                     <Stack direction="vertical" gap="none">
                       <Stack direction="horizontal" gap="condensed">
-                        <IssueClosedIcon size={Size.SMALL} />
+                        <IssueOpenedIcon size={Size.SMALL} />
                         linked issues
                       </Stack>
                       <Stack direction="horizontal" gap="condensed">
@@ -124,53 +260,49 @@ export const NotificationSettings: FC = () => {
                         milestones
                       </Stack>
                     </Stack>
-                  </Box>
+                  </div>
                 </Stack>
               }
             />
 
             <Checkbox
-              name="showNumber"
-              label="Show GitHub number"
               checked={settings.showNumber}
+              label="Show GitHub number"
+              name="showNumber"
               onChange={(evt) =>
                 updateSetting('showNumber', evt.target.checked)
               }
               tooltip={
                 <Stack direction="vertical" gap="condensed">
                   <Text>Show GitHub number for:</Text>
-                  <Box className="pl-4">
-                    <ul>
-                      <li>
-                        <Stack direction="horizontal" gap="condensed">
-                          <CommentIcon size={Size.SMALL} />
-                          Discussion
-                        </Stack>
-                      </li>
-                      <li>
-                        <Stack direction="horizontal" gap="condensed">
-                          <IssueClosedIcon size={Size.SMALL} />
-                          Issue
-                        </Stack>
-                      </li>
-                      <li>
-                        <Stack direction="horizontal" gap="condensed">
-                          <GitPullRequestIcon size={Size.SMALL} />
-                          Pull Request
-                        </Stack>
-                      </li>
-                    </ul>
-                  </Box>
+                  <div className="pl-2">
+                    <Stack direction="vertical" gap="none">
+                      <Stack direction="horizontal" gap="condensed">
+                        <CommentIcon size={Size.SMALL} />
+                        Discussion
+                      </Stack>
+
+                      <Stack direction="horizontal" gap="condensed">
+                        <IssueOpenedIcon size={Size.SMALL} />
+                        Issue
+                      </Stack>
+
+                      <Stack direction="horizontal" gap="condensed">
+                        <GitPullRequestIcon size={Size.SMALL} />
+                        Pull Request
+                      </Stack>
+                    </Stack>
+                  </div>
                 </Stack>
               }
             />
           </Stack>
-        </Box>
+        </div>
 
         <Checkbox
-          name="showOnlyParticipating"
-          label="Fetch only participating"
           checked={settings.participating}
+          label="Fetch only participating"
+          name="showOnlyParticipating"
           onChange={(evt) => updateSetting('participating', evt.target.checked)}
           tooltip={
             <Stack direction="vertical" gap="condensed">
@@ -179,22 +311,23 @@ export const NotificationSettings: FC = () => {
                 only participating notifications.
               </Text>
               <Text>
-                When <Text as="em">unchecked</Text>, {APPLICATION.NAME} will
+                When <Text as="u">unchecked</Text>, {APPLICATION.NAME} will
                 fetch participating and watching notifications.
               </Text>
               <Text>
                 See{' '}
-                <Box
+                <button
                   className="text-gitify-link cursor-pointer"
-                  title="Open GitHub documentation for participating and watching notifications"
                   onClick={(event: MouseEvent<HTMLElement>) => {
                     // Don't trigger onClick of parent element.
                     event.stopPropagation();
                     openGitHubParticipatingDocs();
                   }}
+                  title="Open GitHub documentation for participating and watching notifications"
+                  type="button"
                 >
                   official docs
-                </Box>{' '}
+                </button>{' '}
                 for more details.
               </Text>
             </Stack>
@@ -202,9 +335,9 @@ export const NotificationSettings: FC = () => {
         />
 
         <Checkbox
-          name="markAsDoneOnOpen"
-          label="Mark as done on open"
           checked={settings.markAsDoneOnOpen}
+          label="Mark as done on open"
+          name="markAsDoneOnOpen"
           onChange={(evt) =>
             updateSetting('markAsDoneOnOpen', evt.target.checked)
           }
@@ -217,9 +350,9 @@ export const NotificationSettings: FC = () => {
         />
 
         <Checkbox
-          name="markAsDoneOnUnsubscribe"
-          label="Mark as done on unsubscribe"
           checked={settings.markAsDoneOnUnsubscribe}
+          label="Mark as done on unsubscribe"
+          name="markAsDoneOnUnsubscribe"
           onChange={(evt) =>
             updateSetting('markAsDoneOnUnsubscribe', evt.target.checked)
           }
@@ -232,9 +365,9 @@ export const NotificationSettings: FC = () => {
         />
 
         <Checkbox
-          name="delayNotificationState"
-          label="Delay notification state"
           checked={settings.delayNotificationState}
+          label="Delay notification state"
+          name="delayNotificationState"
           onChange={(evt) =>
             updateSetting('delayNotificationState', evt.target.checked)
           }

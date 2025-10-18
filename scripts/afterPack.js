@@ -1,17 +1,16 @@
 const path = require('node:path');
 const fs = require('node:fs');
-const { AfterPackContext } = require('electron-builder');
 
 const builderConfig = require('../config/electron-builder');
 const electronLanguages = builderConfig.electronLanguages;
 
 function logAfterPackProgress(msg) {
-  // biome-ignore lint/suspicious/noConsoleLog: log notarizing progress
+  // biome-ignore lint/suspicious/noConsole: log notarizing progress
   console.log(`  • [afterPack]: ${msg}`);
 }
 
 /**
- * @param {AfterPackContext} context
+ * @param {import('electron-builder').AfterPackContext} context
  */
 const afterPack = async (context) => {
   logAfterPackProgress('Starting...');

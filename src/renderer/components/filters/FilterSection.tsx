@@ -7,7 +7,6 @@ import { AppContext } from '../../context/App';
 import type { FilterSettingsState, FilterValue } from '../../types';
 import type { Filter } from '../../utils/notifications/filters';
 import { Checkbox } from '../fields/Checkbox';
-import { Tooltip } from '../fields/Tooltip';
 import { Title } from '../primitives/Title';
 import { RequiresDetailedNotificationWarning } from './RequiresDetailedNotificationsWarning';
 
@@ -34,22 +33,21 @@ export const FilterSection = <T extends FilterValue>({
 
   return (
     <fieldset id={id}>
-      <Stack direction="horizontal" gap="condensed" align="baseline">
-        <Title icon={icon}>{title}</Title>
-        {tooltip && (
-          <Tooltip
-            name={`tooltip-${id}`}
-            tooltip={
-              <Stack direction="vertical" gap="condensed">
-                {tooltip}
-                {filter.requiresDetailsNotifications && (
-                  <RequiresDetailedNotificationWarning />
-                )}
-              </Stack>
-            }
-          />
-        )}
-      </Stack>
+      <Title
+        icon={icon}
+        tooltip={
+          tooltip && (
+            <>
+              {tooltip}
+              {filter.requiresDetailsNotifications && (
+                <RequiresDetailedNotificationWarning />
+              )}
+            </>
+          )
+        }
+      >
+        {title}
+      </Title>
 
       <Stack
         direction={layout}
@@ -64,19 +62,19 @@ export const FilterSection = <T extends FilterValue>({
 
           return (
             <Checkbox
-              key={type as string}
-              name={typeTitle}
-              label={typeTitle}
               checked={isChecked}
-              onChange={(evt) =>
-                updateFilter(filterSetting, type, evt.target.checked)
-              }
-              tooltip={typeDescription ? <Text>{typeDescription}</Text> : null}
+              counter={count}
               disabled={
                 filter.requiresDetailsNotifications &&
                 !settings.detailedNotifications
               }
-              counter={count}
+              key={type as string}
+              label={typeTitle}
+              name={typeTitle}
+              onChange={(evt) =>
+                updateFilter(filterSetting, type, evt.target.checked)
+              }
+              tooltip={typeDescription ? <Text>{typeDescription}</Text> : null}
             />
           );
         })}

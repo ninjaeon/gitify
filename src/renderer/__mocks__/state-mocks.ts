@@ -1,7 +1,9 @@
+import { Constants } from '../constants';
 import {
   type Account,
   type AppearanceSettingsState,
   type AuthState,
+  FetchType,
   type FilterSettingsState,
   type GitifyState,
   type GitifyUser,
@@ -14,8 +16,8 @@ import {
   type SystemSettingsState,
   Theme,
   type Token,
+  type TraySettingsState,
 } from '../types';
-import { Constants } from '../utils/constants';
 
 export const mockGitifyUser: GitifyUser = {
   login: 'octocat',
@@ -78,6 +80,7 @@ export const mockToken = 'token-123-456' as Token;
 
 const mockAppearanceSettings: AppearanceSettingsState = {
   theme: Theme.SYSTEM,
+  increaseContrast: false,
   zoomPercentage: 100,
   showAccountHeader: false,
   wrapNotificationTitle: false,
@@ -85,6 +88,8 @@ const mockAppearanceSettings: AppearanceSettingsState = {
 
 const mockNotificationSettings: NotificationSettingsState = {
   groupBy: GroupBy.REPOSITORY,
+  fetchType: FetchType.INTERVAL,
+  fetchInterval: Constants.DEFAULT_FETCH_NOTIFICATIONS_INTERVAL_MS,
   fetchAllNotifications: true,
   detailedNotifications: true,
   showPills: true,
@@ -95,22 +100,26 @@ const mockNotificationSettings: NotificationSettingsState = {
   delayNotificationState: false,
 };
 
+const mockTraySettings: TraySettingsState = {
+  showNotificationsCountInTray: true,
+  useUnreadActiveIcon: true,
+  useAlternateIdleIcon: false,
+};
+
 const mockSystemSettings: SystemSettingsState = {
   openLinks: OpenPreference.FOREGROUND,
   keyboardShortcut: true,
-  showNotificationsCountInTray: true,
   showNotifications: true,
   playSound: true,
   notificationVolume: 20,
-  useAlternateIdleIcon: false,
   openAtStartup: false,
   showWindowOnStartup: false,
 };
 
 const mockFilters: FilterSettingsState = {
   filterUserTypes: [],
-  filterIncludeHandles: [],
-  filterExcludeHandles: [],
+  filterIncludeSearchTokens: [],
+  filterExcludeSearchTokens: [],
   filterSubjectTypes: [],
   filterStates: [],
   filterReasons: [],
@@ -119,6 +128,7 @@ const mockFilters: FilterSettingsState = {
 export const mockSettings: SettingsState = {
   ...mockAppearanceSettings,
   ...mockNotificationSettings,
+  ...mockTraySettings,
   ...mockSystemSettings,
   ...mockFilters,
 };

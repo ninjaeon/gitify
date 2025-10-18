@@ -1,6 +1,7 @@
-import { CheckIcon, ReadIcon } from '@primer/octicons-react';
-import { Box, Button, Stack } from '@primer/react';
 import { type FC, type MouseEvent, useContext, useState } from 'react';
+
+import { CheckIcon, ReadIcon } from '@primer/octicons-react';
+import { Button, Stack } from '@primer/react';
 
 import { AppContext } from '../../context/App';
 import { Opacity, Size } from '../../types';
@@ -56,80 +57,74 @@ export const RepositoryNotifications: FC<IRepositoryNotifications> = ({
 
   return (
     <>
-      <Box
+      <Stack
         className={cn(
-          'group pr-1 py-0.5',
+          'group relative pr-1 py-0.5',
           'bg-gitify-repository',
           animateExit &&
-            'translate-x-full opacity-0 transition duration-[350ms] ease-in-out',
+            'translate-x-full opacity-0 transition duration-350 ease-in-out',
           showAsRead && Opacity.READ,
         )}
+        direction="horizontal"
         onClick={actionToggleRepositoryNotifications}
       >
-        <Stack
-          direction="horizontal"
-          align="center"
-          gap="condensed"
-          className="relative"
+        <Button
+          alignContent="center"
+          count={repoNotifications.length}
+          data-testid="open-repository"
+          onClick={(event: MouseEvent<HTMLElement>) => {
+            // Don't trigger onClick of parent element.
+            event.stopPropagation();
+            openRepository(repoNotifications[0].repository);
+          }}
+          title="Open repository"
+          variant="invisible"
         >
-          <Button
-            title="Open repository"
-            variant="invisible"
-            alignContent="center"
-            count={repoNotifications.length}
-            onClick={(event: MouseEvent<HTMLElement>) => {
-              // Don't trigger onClick of parent element.
-              event.stopPropagation();
-              openRepository(repoNotifications[0].repository);
-            }}
-            data-testid="open-repository"
-          >
-            <AvatarWithFallback
-              src={avatarUrl}
-              alt={repoName}
-              name={repoName}
-              size={Size.LARGE}
-              userType={repoNotifications[0].repository.owner.type}
+          <AvatarWithFallback
+            alt={repoName}
+            name={repoName}
+            size={Size.LARGE}
+            src={avatarUrl}
+            userType={repoNotifications[0].repository.owner.type}
+          />
+        </Button>
+
+        {!animateExit && (
+          <HoverGroup bgColor="group-hover:bg-gitify-repository">
+            <HoverButton
+              action={actionMarkAsDone}
+              enabled={isMarkAsDoneFeatureSupported(
+                repoNotifications[0].account,
+              )}
+              icon={CheckIcon}
+              label="Mark repository as done"
+              testid="repository-mark-as-done"
             />
-          </Button>
 
-          {!animateExit && (
-            <HoverGroup bgColor="group-hover:bg-gitify-repository">
-              <HoverButton
-                label="Mark repository as done"
-                icon={CheckIcon}
-                enabled={isMarkAsDoneFeatureSupported(
-                  repoNotifications[0].account,
-                )}
-                testid="repository-mark-as-done"
-                action={actionMarkAsDone}
-              />
+            <HoverButton
+              action={actionMarkAsRead}
+              icon={ReadIcon}
+              label="Mark repository as read"
+              testid="repository-mark-as-read"
+            />
 
-              <HoverButton
-                label="Mark repository as read"
-                icon={ReadIcon}
-                testid="repository-mark-as-read"
-                action={actionMarkAsRead}
-              />
-
-              <HoverButton
-                label={Chevron.label}
-                icon={Chevron.icon}
-                testid="repository-toggle"
-                action={actionToggleRepositoryNotifications}
-              />
-            </HoverGroup>
-          )}
-        </Stack>
-      </Box>
+            <HoverButton
+              action={actionToggleRepositoryNotifications}
+              icon={Chevron.icon}
+              label={Chevron.label}
+              testid="repository-toggle"
+            />
+          </HoverGroup>
+        )}
+      </Stack>
 
       {showRepositoryNotifications &&
         repoNotifications.map((notification) => (
           <NotificationRow
-            key={notification.id}
-            notification={notification}
             isAnimated={animateExit}
             isRead={showAsRead}
+            key={notification.id}
+            notification={notification}
           />
         ))}
     </>

@@ -1,13 +1,12 @@
 const { notarize } = require('@electron/notarize');
-const { AfterPackContext } = require('electron-builder');
 
 function logAfterSignProgress(msg) {
-  // biome-ignore lint/suspicious/noConsoleLog: log notarizing progress
+  // biome-ignore lint/suspicious/noConsole: log notarizing progress
   console.log(`  • [afterSign]: ${msg}`);
 }
 
 /**
- * @param {AfterPackContext} context
+ * @param {import('electron-builder').AfterPackContext} context
  */
 const afterSign = async (context) => {
   logAfterSignProgress('Starting...');

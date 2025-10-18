@@ -2,15 +2,16 @@ import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { useContext } from 'react';
 
 import { mockAuth, mockSettings } from '../__mocks__/state-mocks';
+import { Constants } from '../constants';
 import { useNotifications } from '../hooks/useNotifications';
 import type { AuthState, Hostname, SettingsState, Token } from '../types';
 import { mockSingleNotification } from '../utils/api/__mocks__/response-mocks';
 import * as apiRequests from '../utils/api/request';
 import * as comms from '../utils/comms';
-import { Constants } from '../utils/constants';
 import * as notifications from '../utils/notifications/notifications';
 import * as storage from '../utils/storage';
-import { AppContext, AppProvider, defaultSettings } from './App';
+import { AppContext, AppProvider } from './App';
+import { defaultSettings } from './defaults';
 
 jest.mock('../hooks/useNotifications');
 
@@ -76,19 +77,25 @@ describe('renderer/context/App.tsx', () => {
       );
 
       act(() => {
-        jest.advanceTimersByTime(Constants.FETCH_NOTIFICATIONS_INTERVAL);
+        jest.advanceTimersByTime(
+          Constants.DEFAULT_FETCH_NOTIFICATIONS_INTERVAL_MS,
+        );
         return;
       });
       expect(fetchNotificationsMock).toHaveBeenCalledTimes(2);
 
       act(() => {
-        jest.advanceTimersByTime(Constants.FETCH_NOTIFICATIONS_INTERVAL);
+        jest.advanceTimersByTime(
+          Constants.DEFAULT_FETCH_NOTIFICATIONS_INTERVAL_MS,
+        );
         return;
       });
       expect(fetchNotificationsMock).toHaveBeenCalledTimes(3);
 
       act(() => {
-        jest.advanceTimersByTime(Constants.FETCH_NOTIFICATIONS_INTERVAL);
+        jest.advanceTimersByTime(
+          Constants.DEFAULT_FETCH_NOTIFICATIONS_INTERVAL_MS,
+        );
         return;
       });
       expect(fetchNotificationsMock).toHaveBeenCalledTimes(4);
@@ -99,7 +106,7 @@ describe('renderer/context/App.tsx', () => {
         const { fetchNotifications } = useContext(AppContext);
 
         return (
-          <button type="button" onClick={fetchNotifications}>
+          <button onClick={fetchNotifications} type="button">
             Test Case
           </button>
         );
@@ -120,8 +127,8 @@ describe('renderer/context/App.tsx', () => {
 
         return (
           <button
-            type="button"
             onClick={() => markNotificationsAsRead([mockSingleNotification])}
+            type="button"
           >
             Test Case
           </button>
@@ -145,8 +152,8 @@ describe('renderer/context/App.tsx', () => {
 
         return (
           <button
-            type="button"
             onClick={() => markNotificationsAsDone([mockSingleNotification])}
+            type="button"
           >
             Test Case
           </button>
@@ -170,8 +177,8 @@ describe('renderer/context/App.tsx', () => {
 
         return (
           <button
-            type="button"
             onClick={() => unsubscribeNotification(mockSingleNotification)}
+            type="button"
           >
             Test Case
           </button>
@@ -200,6 +207,10 @@ describe('renderer/context/App.tsx', () => {
       });
     });
 
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
     it('should call loginWithPersonalAccessToken', async () => {
       apiRequestAuthMock.mockResolvedValueOnce(null);
 
@@ -208,13 +219,13 @@ describe('renderer/context/App.tsx', () => {
 
         return (
           <button
-            type="button"
             onClick={() =>
               loginWithPersonalAccessToken({
                 hostname: 'github.com' as Hostname,
                 token: '123-456' as Token,
               })
             }
+            type="button"
           >
             Test Case
           </button>
@@ -229,15 +240,10 @@ describe('renderer/context/App.tsx', () => {
         expect(fetchNotificationsMock).toHaveBeenCalledTimes(1),
       );
 
-      expect(apiRequestAuthMock).toHaveBeenCalledTimes(2);
+      expect(apiRequestAuthMock).toHaveBeenCalledTimes(1);
       expect(apiRequestAuthMock).toHaveBeenCalledWith(
         'https://api.github.com/notifications',
         'HEAD',
-        '123-456',
-      );
-      expect(apiRequestAuthMock).toHaveBeenCalledWith(
-        'https://api.github.com/user',
-        'GET',
         'encrypted',
       );
     });
@@ -262,8 +268,8 @@ describe('renderer/context/App.tsx', () => {
 
         return (
           <button
-            type="button"
             onClick={() => updateSetting('participating', true)}
+            type="button"
           >
             Test Case
           </button>
@@ -298,8 +304,8 @@ describe('renderer/context/App.tsx', () => {
 
         return (
           <button
-            type="button"
             onClick={() => updateSetting('openAtStartup', true)}
+            type="button"
           >
             Test Case
           </button>
@@ -334,7 +340,7 @@ describe('renderer/context/App.tsx', () => {
         const { clearFilters } = useContext(AppContext);
 
         return (
-          <button type="button" onClick={() => clearFilters()}>
+          <button onClick={() => clearFilters()} type="button">
             Test Case
           </button>
         );
@@ -352,9 +358,11 @@ describe('renderer/context/App.tsx', () => {
         } as AuthState,
         settings: {
           ...mockSettings,
+          filterIncludeSearchTokens: defaultSettings.filterIncludeSearchTokens,
+          filterExcludeSearchTokens: defaultSettings.filterExcludeSearchTokens,
           filterUserTypes: defaultSettings.filterUserTypes,
-          filterIncludeHandles: defaultSettings.filterIncludeHandles,
-          filterExcludeHandles: defaultSettings.filterExcludeHandles,
+          filterSubjectTypes: defaultSettings.filterSubjectTypes,
+          filterStates: defaultSettings.filterStates,
           filterReasons: defaultSettings.filterReasons,
         },
       });
@@ -369,7 +377,7 @@ describe('renderer/context/App.tsx', () => {
         const { resetSettings } = useContext(AppContext);
 
         return (
-          <button type="button" onClick={() => resetSettings()}>
+          <button onClick={() => resetSettings()} type="button">
             Test Case
           </button>
         );
